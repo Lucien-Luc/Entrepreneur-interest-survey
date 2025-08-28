@@ -655,21 +655,24 @@ body.admin-mode #adminView.active {
 
 /* Survey Styles with Liquid Glass Effect */
 .survey-container {
-    max-width: 900px;
-    margin: 0 auto;
+    max-width: 650px; /* Reduced for better screen fit */
+    margin: 1rem auto;
     background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-radius: 24px;
+    border-radius: 16px; /* Reduced border radius */
     box-shadow: 
         0 8px 32px 0 rgba(45, 212, 191, 0.12),
         0 4px 16px 0 rgba(0, 0, 0, 0.08),
         inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
-    padding: 3rem;
+    padding: 2rem; /* Reduced padding */
     border: 1px solid rgba(255, 255, 255, 0.18);
     position: relative;
     overflow: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: calc(100vh - 8rem); /* Optimize for screen height */
+    display: flex;
+    flex-direction: column;
 }
 
 .survey-container:hover {
@@ -692,17 +695,18 @@ body.admin-mode #adminView.active {
 
 .survey-header {
     text-align: center;
-    margin-bottom: 3rem;
-    padding: 2.5rem;
+    margin-bottom: 1.5rem; /* Reduced margin */
+    padding: 1.5rem; /* Reduced padding */
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 20px;
+    border-radius: 12px; /* Reduced border radius */
     position: relative;
     box-shadow: 
         0 4px 20px 0 rgba(45, 212, 191, 0.08),
         inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
+    flex-shrink: 0;
 }
 
 .survey-header::after {
@@ -778,7 +782,7 @@ body.admin-mode #adminView.active {
 
 /* Form Controls */
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem; /* Reduced for better screen fit */
     position: relative;
 }
 
@@ -1035,10 +1039,10 @@ textarea.form-control {
 /* Progress Bar */
 .progress-bar {
     width: 100%;
-    height: 8px;
+    height: 6px; /* Slightly smaller for better screen usage */
     background-color: #E5E7EB;
-    border-radius: 4px;
-    margin-bottom: 2rem;
+    border-radius: 3px;
+    margin-bottom: 1rem; /* Reduced margin */
     overflow: hidden;
 }
 
@@ -1234,10 +1238,13 @@ textarea.form-control {
 .survey-section {
     display: none;
     animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    flex: 1; /* Allow sections to expand and fill available space */
 }
 
 .survey-section.active {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 @keyframes slideIn {
@@ -1527,10 +1534,11 @@ textarea.form-control {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 3.5rem;
-    padding-top: 2.5rem;
+    margin-top: auto; /* Push to bottom for better layout */
+    padding-top: 1.5rem; /* Reduced padding */
     border-top: 2px solid rgba(45, 212, 191, 0.1);
     position: relative;
+    flex-shrink: 0; /* Prevent navigation from shrinking */
 }
 
 .survey-navigation::before {
@@ -1633,52 +1641,71 @@ textarea.form-control {
     }
 }
 
-/* Mobile Responsiveness for Employer Form */
+/* Enhanced Mobile Responsiveness - Main tablet breakpoint */
 @media (max-width: 768px) {
+    .main-content {
+        padding: 1rem 0.5rem;
+    }
+    
     .survey-container {
-        padding: 1.5rem;
-        margin: 0 0.75rem;
-        border-radius: 16px;
+        padding: 1.2rem; /* Reduced for better screen fit */
+        margin: 0.5rem;
+        border-radius: 12px;
+        min-height: calc(100vh - 4rem); /* Optimize screen height usage */
+    }
+    
+    .survey-header {
+        padding: 1rem; /* Compact mobile header */
+        margin-bottom: 1rem;
     }
 
     .survey-header h1 {
-        font-size: 1.875rem;
+        font-size: 1.6rem; /* Slightly smaller for better fit */
+        line-height: 1.3;
     }
 
     .survey-header p {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     .section-header {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-        padding: 1.25rem;
+        padding: 0.8rem; /* Compact section headers */
+        margin-bottom: 1rem;
+        gap: 0.8rem;
     }
 
     .section-header i {
-        width: 3rem;
-        height: 3rem;
-        font-size: 1.5rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1.2rem;
     }
 
     .section-header h2 {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
 
     .checkbox-group.multi-select {
         grid-template-columns: 1fr;
     }
+    
+    .checkbox-group {
+        gap: 0.4rem; /* Reduced gap for mobile */
+    }
+
+    .checkbox-label {
+        padding: 0.6rem 0.8rem; /* Smaller touch targets */
+        font-size: 0.9rem;
+    }
 
     .survey-navigation {
-        flex-direction: column;
-        gap: 1rem;
+        gap: 0.8rem;
+        padding: 1.5rem 0;
+        margin-top: auto; /* Push to bottom */
     }
 
     .survey-navigation .btn {
-        width: 100%;
-        justify-content: center;
-        padding: 1.25rem 2rem;
+        padding: 0.8rem 1.2rem;
+        font-size: 0.9rem;
     }
 
     .form-group input,
@@ -1686,7 +1713,12 @@ textarea.form-control {
     .form-group select {
         font-size: 16px;
         /* Prevents zoom on iOS */
-        padding: 1.25rem;
+        padding: 0.7rem; /* Better mobile touch */
+    }
+    
+    textarea {
+        min-height: 80px; /* Compact textarea on mobile */
+        resize: vertical;
     }
 
     .progress-text {
@@ -1694,49 +1726,91 @@ textarea.form-control {
     }
 
     .form-group {
-        margin-bottom: 1.5rem;
+        margin-bottom: 0.8rem; /* Tighter mobile spacing */
+    }
+    
+    .form-group label {
+        font-size: 0.95rem;
+        margin-bottom: 0.4rem;
     }
 }
 
+/* Extra small mobile devices - Maximum compactness */
 @media (max-width: 480px) {
     .survey-container {
-        padding: 1.25rem;
-        margin: 0 0.5rem;
+        padding: 1rem; /* Maximum compression for small screens */
+        margin: 0.25rem;
+        border-radius: 8px;
+        min-height: calc(100vh - 2rem);
     }
 
     .survey-header {
-        padding-bottom: 1.5rem;
+        padding: 0.8rem;
+        margin-bottom: 0.8rem;
     }
 
     .survey-header h1 {
-        font-size: 1.625rem;
+        font-size: 1.4rem;
+        line-height: 1.3;
+    }
+    
+    .survey-header p {
+        font-size: 0.85rem;
     }
 
     .section-header {
-        padding: 1rem;
+        padding: 0.6rem;
+        margin-bottom: 0.8rem;
     }
 
     .section-header h2 {
-        font-size: 1.375rem;
+        font-size: 1.1rem;
     }
 
     .section-header i {
-        width: 2.75rem;
-        height: 2.75rem;
-        font-size: 1.375rem;
+        width: 2rem;
+        height: 2rem;
+        font-size: 1rem;
     }
 
     .form-group {
-        margin-bottom: 1.25rem;
+        margin-bottom: 0.6rem;
+    }
+    
+    .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .checkbox-group {
+        flex-direction: column;
+        gap: 0.3rem;
     }
 
     .checkbox-label {
-        padding: 1rem;
+        padding: 0.5rem 0.6rem;
+        font-size: 0.85rem;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        padding: 0.6rem;
+        font-size: 16px;
+    }
+    
+    textarea {
+        min-height: 70px;
+    }
+
+    .survey-navigation {
+        padding: 1rem 0;
+        gap: 0.6rem;
     }
 
     .survey-navigation .btn {
-        padding: 1rem 1.5rem;
-        font-size: 0.9rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
     }
 }
 
