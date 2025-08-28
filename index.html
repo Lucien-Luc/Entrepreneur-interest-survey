@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Talent Fair - BPN Employer Diagnostic</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <!-- User Guide Tutorial Overlay -->
+    <div id="userGuideOverlay" class="user-guide-overlay">
+        <div class="user-guide-modal">
+            <div class="user-guide-header">
+                <div class="guide-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h2 data-translate="guide_title">Welcome! Here's how to use the form</h2>
+                <button class="guide-close-btn" onclick="window.simpleFormSubmit.closeUserGuide()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="user-guide-content">
+                <div class="guide-step active" data-step="1">
+                    <div class="step-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h3 data-translate="guide_step1_title">Fill out your company information</h3>
+                    <p data-translate="guide_step1_desc">Start by providing basic details about your company and contact information. This helps us understand your business better.</p>
+                </div>
+                
+                <div class="guide-step" data-step="2">
+                    <div class="step-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <h3 data-translate="guide_step2_title">Choose single or multiple positions</h3>
+                    <p data-translate="guide_step2_desc">Select how many job positions you're hiring for. If you choose multiple positions, you'll get individual forms for each role.</p>
+                </div>
+                
+                <div class="guide-step" data-step="3">
+                    <div class="step-icon">
+                        <i class="fas fa-copy"></i>
+                    </div>
+                    <h3 data-translate="guide_step3_title">Use "Paste to:" for similar positions</h3>
+                    <p data-translate="guide_step3_desc">Save time! Fill out one position completely, then click the "Paste to:" button to copy all details to other similar positions. You can copy from any position to any other position.</p>
+                </div>
+                
+                <div class="guide-step" data-step="4">
+                    <div class="step-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3 data-translate="guide_step4_title">Switch languages anytime</h3>
+                    <p data-translate="guide_step4_desc">Use the flag buttons in the top-right corner to switch between English and Kinyarwanda. Your progress will be saved automatically.</p>
+                </div>
+                
+                <div class="guide-step" data-step="5">
+                    <div class="step-icon">
+                        <i class="fas fa-save"></i>
+                    </div>
+                    <h3 data-translate="guide_step5_title">Auto-save keeps your work safe</h3>
+                    <p data-translate="guide_step5_desc">Don't worry about losing your work! The form automatically saves your progress as you type, and works even when you're offline.</p>
+                </div>
+            </div>
+            
+            <div class="user-guide-navigation">
+                <div class="step-indicators">
+                    <span class="step-dot active" data-step="1"></span>
+                    <span class="step-dot" data-step="2"></span>
+                    <span class="step-dot" data-step="3"></span>
+                    <span class="step-dot" data-step="4"></span>
+                    <span class="step-dot" data-step="5"></span>
+                </div>
+                
+                <div class="guide-buttons">
+                    <button class="guide-btn guide-prev" onclick="window.simpleFormSubmit.previousGuideStep()" disabled>
+                        <i class="fas fa-chevron-left"></i>
+                        <span data-translate="previous">Previous</span>
+                    </button>
+                    <button class="guide-btn guide-next" onclick="window.simpleFormSubmit.nextGuideStep()">
+                        <span data-translate="next">Next</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button class="guide-btn guide-start" onclick="window.simpleFormSubmit.startUsingForm()" style="display: none;">
+                        <span data-translate="guide_start_using">Start Using Form</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="guide-footer">
+                <label class="guide-checkbox">
+                    <input type="checkbox" id="dontShowAgain">
+                    <span data-translate="guide_dont_show">Don't show this guide again</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Container -->
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo" id="logoContainer">
+                        <img src="attached_assets/logo_1752487155061_1752582716936.png" alt="BPN Logo" style="height: 40px; width: auto;">
+                    </div>
+                </div>
+                <div class="header-right">
+                    <!-- Language Switcher -->
+                    <div class="language-switcher">
+                        <button class="lang-btn active" data-lang="en" title="English">
+                            🇺🇸
+                        </button>
+                        <button class="lang-btn" data-lang="rw" title="Kinyarwanda">
+                            🇷🇼
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Introduction Page -->
+            <div id="introView" class="view active">
+                <div class="intro-container">
+                    <div class="intro-content">
+                        <div class="intro-header">
+                            <h1 data-translate="intro_title">Talent Fair - Employer Diagnostic</h1>
+                            <p data-translate="intro_subtitle">Help us understand your hiring needs and talent requirements for the upcoming job fair.</p>
+                        </div>
+                        
+                        <div class="partner-logos">
+                            <div class="logo-section primary">
+                                <img src="attached_assets/logo_1752487155061_1752582716936.png" alt="BPN Logo" class="bpn-logo">
+                            </div>
+                            
+                            <div class="logo-section secondary">
+                                <img src="attached_assets/all green long no slogan_1752656322033.png" alt="Harambee Youth Employment Accelerator" class="harambee-logo">
+                            </div>
+                            
+                            <div class="logo-section partnership">
+                                <img src="attached_assets/G2S Logo_1752656322030.png" alt="In partnership with Mastercard Foundation Grow 2 Scale" class="g2s-logo">
+                            </div>
+                        </div>
+                        
+                        <div class="intro-actions">
+                            <button id="gotItBtn" class="btn btn-primary intro-btn">
+                                <span data-translate="got_it">Got it</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Survey View (Default) -->
+            <div id="surveyView" class="view">
+                <div class="survey-container">
+                    <div class="survey-header">
+                        <h1 id="surveyTitle" data-translate="survey_title">Employer Diagnostic Form</h1>
+                        <p id="surveyDescription" data-translate="survey_description">Please complete this form to help us better match your company with the right talent at the fair.</p>
+                        <div class="survey-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                            <span class="progress-text" id="progressText">Section 1 of 4</span>
+                        </div>
+                    </div>
+                    
+                    <form class="employer-diagnostic-form" id="employerDiagnosticForm">
+                        <!-- Section 1: Company Information -->
+                        <div class="survey-section active" id="section1">
+                            <div class="section-header">
+                                <i class="fas fa-building"></i>
+                                <h2 data-translate="company_info">Company Information</h2>
+                            </div>
+                            <div class="form-group">
+                                <label for="companyName" data-translate="company_name">Company Name</label>
+                                <span class="required"> *</span>
+                                <input type="text" id="companyName" name="companyName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactPerson" data-translate="contact_person">Contact Person (Name & Role)</label>
+                                <span class="required"> *</span>
+                                <input type="text" id="contactPerson" name="contactPerson" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="companyWebsite" data-translate="company_website">Company Website (if available)</label>
+                                <input type="url" id="companyWebsite" name="companyWebsite">
+                            </div>
+                            <div class="form-group">
+                                <label for="companyLocation" data-translate="company_location">Company Location (City/Area)</label>
+                                <span class="required"> *</span>
+                                <input type="text" id="companyLocation" name="companyLocation" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="industry" data-translate="industry">Industry/Field</label>
+                                <span class="required"> *</span>
+                                <input type="text" id="industry" name="industry" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="companyDescription" data-translate="company_description">Company Description</label>
+                                <span class="required"> *</span>
+                                <textarea id="companyDescription" name="companyDescription" rows="4" placeholder="Tell us briefly about your company — what you do and what makes your business unique (2-3 sentences)" required></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Position Details & Job Summary -->
+                        <div class="survey-section" id="section2">
+                            <div class="section-header">
+                                <i class="fas fa-briefcase"></i>
+                                <h2 data-translate="position_details">Position Details & Job Summary</h2>
+                            </div>
+                            
+                            <!-- Single Position Mode (Default) -->
+                            <div id="singlePositionMode">
+                                <div class="form-group">
+                                    <label for="jobTitle" data-translate="job_title">Job Title</label>
+                                    <span class="required"> *</span>
+                                    <input type="text" id="jobTitle" name="jobTitle" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="positionsAvailable" data-translate="positions_available">Number of Positions Available</label>
+                                    <span class="required"> *</span>
+                                    <input type="number" id="positionsAvailable" name="positionsAvailable" min="1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label data-translate="work_type">Work Type</label>
+                                    <span class="required"> *</span>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="workType" value="full-time" required>
+                                            <span data-translate="full_time">Full-time</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="workType" value="part-time" required>
+                                            <span data-translate="part_time">Part-time</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="workType" value="internship" required>
+                                            <span data-translate="internship">Internship</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label data-translate="work_mode">Work Mode</label>
+                                    <span class="required"> *</span>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="workMode" value="onsite" required>
+                                            <span data-translate="onsite">Onsite</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="workMode" value="remote" required>
+                                            <span data-translate="remote">Remote</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="workMode" value="hybrid" required>
+                                            <span data-translate="hybrid">Hybrid</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="startDate" data-translate="expected_start_date">Expected Start Date</label>
+                                    <span class="required"> *</span>
+                                    <input type="date" id="startDate" name="startDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label data-translate="contract_type">Contract Type</label>
+                                    <span class="required"> *</span>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="contractType" value="permanent" required>
+                                            <span data-translate="permanent">Permanent</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="contractType" value="fixed-term" required>
+                                            <span data-translate="fixed_term">Fixed-Term</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="contractType" value="casual" required>
+                                            <span data-translate="casual">Casual</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Multiple Positions Mode -->
+                            <div id="multiplePositionsMode" style="display: none;">
+                                <div class="positions-header">
+                                    <h3>Configure Each Position</h3>
+                                    <p>Define the details for each of your <span id="positionCount">0</span> positions:</p>
+                                </div>
+                                <div class="positions-grid" id="positionsGrid">
+                                    <!-- Dynamic position cards will be inserted here -->
+                                </div>
+                            </div>
+                            
+                            <!-- Single Position Mode - Job Summary -->
+                            <div id="singlePositionJobSummary">
+                                <div class="form-group">
+                                    <label for="jobSummary" data-translate="job_summary">Job Summary</label>
+                                    <span class="required"> *</span>
+                                    <textarea id="jobSummary" name="jobSummary" rows="3" placeholder="Brief description of the role's purpose (2-3 lines)" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="keyResponsibilities" data-translate="key_responsibilities">Key Responsibilities</label>
+                                    <span class="required"> *</span>
+                                    <textarea id="keyResponsibilities" name="keyResponsibilities" rows="6" placeholder="List 4-6 main tasks and responsibilities for this role..." required></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Candidate Profile & Work Environment -->
+                        <div class="survey-section" id="section3">
+                            <div class="section-header">
+                                <i class="fas fa-user-check"></i>
+                                <h2 data-translate="candidate_profile">Candidate Profile & Work Environment</h2>
+                            </div>
+                            
+                            <!-- Single Position Mode -->
+                            <div id="singlePositionCandidate">
+                                <div class="form-group">
+                                    <label for="idealAge" data-translate="preferred_age_range">Preferred Age Range</label>
+                                    <input type="text" id="idealAge" name="idealAge" placeholder="e.g., 25-35 years">
+                                </div>
+                                <div class="form-group">
+                                    <label for="idealGender" data-translate="gender_preference">Gender Preference</label>
+                                    <select id="idealGender" name="idealGender">
+                                        <option value="" data-translate="no_preference">No preference</option>
+                                        <option value="male" data-translate="male">Male</option>
+                                        <option value="female" data-translate="female">Female</option>
+                                        <option value="any" data-translate="any">Any</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="idealLocation" data-translate="preferred_location">Preferred Location</label>
+                                    <input type="text" id="idealLocation" name="idealLocation" placeholder="Preferred candidate location">
+                                </div>
+                                <div class="form-group">
+                                    <label data-translate="experience_level">Experience Level Required</label>
+                                    <span class="required"> *</span>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="experienceLevel" value="trainee" required>
+                                            <span data-translate="trainee">Trainee</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="experienceLevel" value="entry-level" required>
+                                            <span data-translate="entry_level">Entry-Level</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="experienceLevel" value="mid-career" required>
+                                            <span data-translate="mid_career">Mid-Career</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="radio" name="experienceLevel" value="senior-level" required>
+                                            <span data-translate="senior_level">Senior-Level</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="educationLevel" data-translate="education_level">Education Level Required (if any)</label>
+                                    <input type="text" id="educationLevel" name="educationLevel" placeholder="e.g., High School, Certificate, Degree">
+                                </div>
+                                <div class="form-group">
+                                    <label for="technicalSkills" data-translate="technical_skills">Technical/Professional Skills Needed</label>
+                                    <textarea id="technicalSkills" name="technicalSkills" rows="3" placeholder="List required software, certificates, specific skills..."></textarea>
+                                </div>
+                            </div>
+                            
+
+                            
+                            <div class="form-group">
+                                <label data-translate="behavioral_skills">Behavioral/Soft Skills Needed (Check all that apply)</label>
+                                <div class="checkbox-group multi-select">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="behavioralSkills" value="positive-attitude">
+                                        <span data-translate="positive_attitude">Positive attitude</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="behavioralSkills" value="team-player">
+                                        <span data-translate="team_player">Team player</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="behavioralSkills" value="self-motivated">
+                                        <span data-translate="self_motivated">Self-motivated</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="behavioralSkills" value="reliable">
+                                        <span data-translate="reliable">Reliable</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="behavioralSkills" value="good-time-manager">
+                                        <span data-translate="good_time_manager">Good time manager</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="behavioralSkills" value="adaptable">
+                                        <span data-translate="adaptable">Adaptable</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="behavioralSkills" value="takes-initiative">
+                                        <span data-translate="takes_initiative">Takes initiative</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="behavioralSkills" value="customer-friendly">
+                                        <span data-translate="customer_friendly">Customer-friendly</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="otherBehavioralSkills" data-translate="other_behavioral_skills">Other behavioral skills needed</label>
+                                <input type="text" id="otherBehavioralSkills" name="otherBehavioralSkills" placeholder="Please specify any other qualities">
+                            </div>
+                            <div class="form-group">
+                                <label for="workEnvironment" data-translate="work_environment">Work Environment & Social Aspects</label>
+                                <textarea id="workEnvironment" name="workEnvironment" rows="4" placeholder="Who will they work with? (Supervisor, team, customers?) What's the workplace like?"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Section 4: Compensation & Benefits -->
+                        <div class="survey-section" id="section4">
+                            <div class="section-header">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <h2 data-translate="what_you_offer">What You Offer</h2>
+                            </div>
+                            
+                            <!-- Single Position Mode -->
+                            <div id="singlePositionOffer">
+                                <div class="form-group">
+                                    <label for="salaryRange" data-translate="salary_range">Salary Range (Monthly)</label>
+                                    <span class="required"> *</span>
+                                    <input type="text" id="salaryRange" name="salaryRange" placeholder="e.g., RWF 250,000 - 350,000" required>
+                                </div>
+                                <div class="form-group">
+                                    <label data-translate="benefits_perks">Benefits/Perks (Select all that apply)</label>
+                                    <div class="checkbox-group multi-select">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="benefits" value="transport-allowance">
+                                            <span data-translate="transport_allowance">Transport allowance</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="benefits" value="meals-lunch">
+                                            <span data-translate="meals_lunch">Meals/Lunch</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="benefits" value="health-insurance">
+                                            <span data-translate="health_insurance">Health insurance</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="benefits" value="training-development">
+                                            <span data-translate="training_development">Training/Development</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="benefits" value="commission-bonuses">
+                                            <span data-translate="commission_bonuses">Commission or Bonuses</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="benefits" value="flexible-schedule">
+                                            <span data-translate="flexible_schedule">Flexible schedule</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="otherBenefits" data-translate="other_benefits">Other benefits/perks</label>
+                                    <input type="text" id="otherBenefits" name="otherBenefits" placeholder="Please specify any other benefits">
+                                </div>
+                                <div class="form-group">
+                                    <label for="workingHours" data-translate="working_hours">Working Hours</label>
+                                    <span class="required"> *</span>
+                                    <input type="text" id="workingHours" name="workingHours" placeholder="e.g., 9am–5pm, Shift work" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="additionalNotes" data-translate="additional_notes">Additional Notes (Optional)</label>
+                                    <textarea id="additionalNotes" name="additionalNotes" rows="4" placeholder="Any extra info you'd like to share?"></textarea>
+                                </div>
+                            </div>
+                            
+                            <!-- Multiple Positions Mode -->
+                            <div id="multiplePositionsOffer" style="display: none;">
+                                <div class="positions-header">
+                                    <h3 data-translate="multiple_positions_compensation">Multiple Positions Compensation</h3>
+                                    <p data-translate="multiple_positions_note">Since you're hiring for multiple positions, please configure the salary ranges, benefits, and working hours for each position in the Position Details section.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="survey-navigation">
+                            <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">
+                                <i class="fas fa-arrow-left"></i>
+                                <span data-translate="previous">Previous</span>
+                            </button>
+                            <button type="button" class="btn btn-primary" id="nextBtn">
+                                <span data-translate="next">Next</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                            <button type="button" class="btn btn-success" id="submitBtn" style="display: none;">
+                                <i class="fas fa-check"></i>
+                                <span data-translate="submit_form">Submit Form</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Subtle Footer -->
+    <footer class="subtle-footer">
+        <div class="footer-content">
+            <span class="powered-by">Powered by BPN</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/simple-submit.js"></script>
+</body>
