@@ -11,201 +11,127 @@ class SimpleFormSubmit {
         this.currentLanguage = 'en';
         this.translations = {
             en: {
-                'page_title': 'Talent Fair - Employer Diagnostic',
-                'intro_title': 'Talent Fair - Employer Diagnostic',
-                'intro_subtitle': 'Help us understand your hiring needs and talent requirements for the upcoming job fair.',
+                'page_title': 'Expert Support Matching - Business Growth Survey',
+                'intro_title': 'Expert Support Matching',
+                'intro_subtitle': 'Access expert support to grow your business. Complete this assessment to receive tailored guidance and skills support.',
                 'got_it': 'Got it',
-                'survey_title': 'Employer Diagnostic Form',
-                'survey_description': 'Please complete this form to help us better match your company with the right talent at the fair.',
-                'company_info': 'Company Information',
-                'position_details': 'Position Details & Job Summary',
-                'candidate_profile': 'Candidate Profile & Work Environment',
-                'what_you_offer': 'What You Offer',
-                'submit_form': 'SUBMIT FORM',
+                'survey_title': 'Expert Support Matching Survey',
+                'survey_description': 'Please complete this assessment to help us match you with the right expert support for your business growth needs.',
+                'personal_business_info': 'Personal & Business Information',
+                'business_challenges': 'Current Business Challenges',
+                'expert_support_needs': 'Expert Support Needs',
+                'commitment_followup': 'Commitment & Follow-up',
+                'submit_form': 'SUBMIT SURVEY',
                 'next': 'Next',
                 'previous': 'Previous',
-                'company_name': 'Company Name',
-                'contact_person': 'Contact Person (Name & Role)',
-                'company_website': 'Company Website (if available)',
-                'company_location': 'Company Location (City/Area)',
-                'industry': 'Industry/Field',
-                'company_description': 'Company Description',
-                'job_title': 'Job Title',
-                'positions_available': 'Number of Positions Available',
-                'work_type': 'Work Type',
-                'work_mode': 'Work Mode',
-                'full_time': 'Full-time',
-                'part_time': 'Part-time',
-                'internship': 'Internship',
-                'onsite': 'Onsite',
-                'remote': 'Remote',
-                'hybrid': 'Hybrid',
-                'expected_start_date': 'Expected Start Date',
-                'contract_type': 'Contract Type',
-                'permanent': 'Permanent',
-                'fixed_term': 'Fixed-Term',
-                'casual': 'Casual',
-                'job_summary': 'Job Summary',
-                'key_responsibilities': 'Key Responsibilities',
-                'experience_level': 'Experience Level Required',
-                'education_level': 'Education Level Required',
-                'technical_skills': 'Technical/Professional Skills Needed',
-                'behavioral_skills': 'Behavioral/Soft Skills Needed',
-                'other_behavioral_skills': 'Other Behavioral Skills',
-                'work_environment': 'Work Environment',
-                'salary_range': 'Salary Range (Monthly)',
-                'benefits_perks': 'Benefits/Perks',
-                'other_benefits': 'Other benefits/perks',
-                'working_hours': 'Working Hours',
-                'additional_notes': 'Additional Notes',
-                'trainee': 'Trainee',
-                'entry_level': 'Entry-Level',
-                'mid_career': 'Mid-Career',
-                'senior_level': 'Senior-Level',
-                'positive_attitude': 'Positive attitude',
-                'team_player': 'Team player',
-                'self_motivated': 'Self-motivated',
-                'reliable': 'Reliable',
-                'good_time_manager': 'Good time manager',
-                'adaptable': 'Adaptable',
-                'takes_initiative': 'Takes initiative',
-                'customer_friendly': 'Customer-friendly',
-                'multiple_positions_compensation': 'Multiple Positions Compensation',
-                'multiple_positions_note': 'Since you\'re hiring for multiple positions, please configure the salary ranges, benefits, and working hours for each position in the Position Details section.',
-                'company_description_placeholder': 'Tell us briefly about your company — what you do and what makes your business unique (2-3 sentences)',
-                'transport_allowance': 'Transport allowance',
-                'meals_lunch': 'Meals/Lunch',
-                'health_insurance': 'Health insurance',
-                'training_development': 'Training/Development',
-                'commission_bonuses': 'Commission or Bonuses',
-                'flexible_schedule': 'Flexible schedule',
-                'preferred_age_range': 'Preferred Age Range',
-                'gender_preference': 'Gender Preference',
-                'preferred_location': 'Preferred Location',
-                'no_preference': 'No preference',
-                'male': 'Male',
-                'female': 'Female',
-                'any': 'Any',
+                'entrepreneur_name': 'What\'s your name?',
+                'company_name': 'What\'s your company name?',
+                'business_growth_limited': 'Do you feel your business growth is limited by gaps in technical knowledge, systems, or external guidance?',
+                'yes_often': 'Yes, often',
+                'sometimes': 'Sometimes',
+                'no_fully_equipped': 'No, I feel fully equipped',
+                'decision_making': 'How do you make decisions when facing complex business challenges (e.g., production issues, team performance, market growth)?',
+                'trial_error': 'I rely on trial and error',
+                'ask_friends_peers': 'I ask friends/peers',
+                'search_online_trainings': 'I search online or attend trainings',
+                'consult_experts_mentors': 'I consult experts/mentors',
+                'top_challenges': 'What are the top two challenges in your business where you would most value expert support?',
+                'increasing_sales': 'Increasing sales',
+                'improving_production': 'Improving production processes',
+                'modernizing_business': 'Modernizing my business',
+                'becoming_sustainable': 'Becoming more sustainable',
+                'optimizing_team': 'Optimizing team structure/performance',
+                'improving_quality': 'Improving product or service quality',
+                'challenge_details': 'Please provide more details about the specific challenges you are currently experiencing in your business.',
+                'expert_support_areas': 'If an international expert could support you remotely and on-site, what specific areas would you most like practical advice or training in?',
+                'desired_outcomes': 'If you could receive tailored guidance from a global expert, what results would you hope to achieve in your business within the next 6–12 months?',
+                'ready_to_participate': 'Are you prepared to apply expert recommendations and participate in follow-up sessions to ensure long-term impact for your business and community?',
+                'yes_ready_committed': 'Yes, I am ready and committed',
+                'maybe_understand_more': 'Maybe, I would like to understand more',
+                'no_not_at_moment': 'No, not at the moment',
                 // Notification messages
-                'form_submitted_success': 'Form submitted successfully!',
-                'form_saved_offline': 'Form saved. Will submit when online.',
-                'network_error': 'Network error. Form saved, will retry when online.',
+                'form_submitted_success': 'Survey submitted successfully!',
+                'form_saved_offline': 'Survey saved. Will submit when online.',
+                'network_error': 'Network error. Survey saved, will retry when online.',
                 'submission_failed': 'Submission failed. Please check your internet connection.',
                 'connecting': 'Connecting...',
                 'retrying': 'Retrying...',
                 'admin_logout_success': 'Logged out successfully - session cleared',
                 // User guide translations
-                'guide_title': 'Welcome! Here\'s how to use the form',
-                'guide_step1_title': 'Fill out your company information',
-                'guide_step1_desc': 'Start by providing basic details about your company and contact information. This helps us understand your business better.',
-                'guide_step2_title': 'Choose single or multiple positions',
-                'guide_step2_desc': 'Select how many job positions you\'re hiring for. If you choose multiple positions, you\'ll get individual forms for each role.',
-                'guide_step3_title': 'Use "Paste to:" for similar positions',
-                'guide_step3_desc': 'Save time! Fill out one position completely, then click the "Paste to:" button to copy all details to other similar positions. You can copy from any position to any other position.',
+                'guide_title': 'Welcome! Here\'s how to complete your business assessment',
+                'guide_step1_title': 'Share your business details',
+                'guide_step1_desc': 'Start by providing your name and company information. This helps us understand your business and match you with the right expert support.',
+                'guide_step2_title': 'Identify your business challenges',
+                'guide_step2_desc': 'Help us understand your current challenges and how you make decisions when facing complex business situations.',
+                'guide_step3_title': 'Define your support needs',
+                'guide_step3_desc': 'Tell us about the specific areas where expert guidance would help your business grow and what outcomes you hope to achieve.',
                 'guide_step4_title': 'Switch languages anytime',
                 'guide_step4_desc': 'Use the flag buttons in the top-right corner to switch between English and Kinyarwanda. Your progress will be saved automatically.',
-                'guide_step5_title': 'Auto-save keeps your work safe',
-                'guide_step5_desc': 'Don\'t worry about losing your work! The form automatically saves your progress as you type, and works even when you\'re offline.',
-                'guide_start_using': 'Start Using Form',
+                'guide_step5_title': 'Confirm your commitment',
+                'guide_step5_desc': 'The final step is to confirm your readiness to work with an expert and participate in follow-up sessions for lasting business impact.',
+                'guide_start_using': 'Start Assessment',
                 'guide_dont_show': 'Don\'t show this guide again'
             },
             rw: {
-                'page_title': 'Gushaka Akazi - Ibibazo by\'Abakoresha',
-                'intro_title': 'Gushaka Akazi - Ibibazo by\'Abakoresha',
-                'intro_subtitle': 'Dufashe kumenya ibyo ukeneye mu gushaka abakozi mu nama y\'akazi izaza.',
+                'page_title': 'Gushaka Ubufasha bw\'Impuguke - Isuzuma ry\'Iterambere ry\'Ubucuruzi',
+                'intro_title': 'Gushaka Ubufasha bw\'Impuguke',
+                'intro_subtitle': 'Bonera ubufasha bw\'impuguke kugira ugire iterambere mu bucuruzi bwawe. Uzuza iki gisuzuma kugira dukunikire ubufasha bwujuje ibyo ukeneye.',
                 'got_it': 'Byumvise',
-                'survey_title': 'Ifishi y\'Abakoresha',
-                'survey_description': 'Uzuza iyi fishi kugira ngo dufashe guhura n\'abakozi bakwiriye ikigo cyawe.',
-                'company_info': 'Amakuru y\'Ikigo',
-                'position_details': 'Umurimo n\'Ibisobanuro byawo',
-                'candidate_profile': 'Abakozi Bashaka n\'Aho Bakorera',
-                'what_you_offer': 'Icyo Utanga',
-                'submit_form': 'OHEREZA',
+                'survey_title': 'Isuzuma ryo Gushaka Ubufasha bw\'Impuguke',
+                'survey_description': 'Uzuza iki gisuzuma kugira dufashe kubonera ubufasha bwiza bw\'impuguke bwifuza iterambere ry\'ubucuruzi bwawe.',
+                'personal_business_info': 'Amakuru y\'Umuntu n\'Ubucuruzi',
+                'business_challenges': 'Ibibazo by\'Ubucuruzi Ubu',
+                'expert_support_needs': 'Ubufasha bw\'Impuguke Ukeneye',
+                'commitment_followup': 'Kwiyemeza no Gukurikirana',
+                'submit_form': 'OHEREZA ISUZUMA',
                 'next': 'Komeza',
                 'previous': 'Subira',
-                'company_name': 'Izina ry\'Ikigo',
-                'contact_person': 'Uwavuga n\'Ikigo (Izina n\'Urwego)',
-                'company_website': 'Urubuga rw\'Ikigo (niba ruhari)',
-                'company_location': 'Aho Ikigo kiherereye (Umujyi/Akarere)',
-                'industry': 'Ubwoko bw\'Ubucuruzi',
-                'company_description': 'Ibisobanuro by\'Ikigo',
-                'job_title': 'Izina ry\'Umurimo',
-                'positions_available': 'Umubare w\'Imyanya ihari',
-                'work_type': 'Ubwoko bw\'Akazi',
-                'work_mode': 'Uburyo bwo Gukora',
-                'full_time': 'Akazi k\'igihe cyose',
-                'part_time': 'Akazi k\'igihe gito',
-                'internship': 'Amahugurwa',
-                'onsite': 'Ku kazi',
-                'remote': 'Kure',
-                'hybrid': 'Bivanze',
-                'expected_start_date': 'Itariki Itegerejwe yo Gutangira',
-                'contract_type': 'Ubwoko bw\'Amasezerano',
-                'permanent': 'Buhoraho',
-                'fixed_term': 'Igihe Gitandukanye',
-                'casual': 'Ubusanzwe',
-                'job_summary': 'Incamake y\'Akazi',
-                'key_responsibilities': 'Inshingano Zingenzi',
-                'experience_level': 'Urwego rw\'Ubumenyi Rusabwa',
-                'education_level': 'Urwego rw\'Amashuri Rusabwa',
-                'technical_skills': 'Ubuhanga bw\'Umwuga',
-                'behavioral_skills': 'Ubuhanga bw\'Imyitwarire',
-                'other_behavioral_skills': 'Ubundi Buhanga bw\'Imyitwarire',
-                'work_environment': 'Ibidukikije by\'Akazi',
-                'salary_range': 'Umushahara (Buri Kwezi)',
-                'benefits_perks': 'Inyungu n\'Ibindi',
-                'other_benefits': 'Izindi nyungu',
-                'working_hours': 'Amasaha yo Gukora',
-                'additional_notes': 'Andi Makuru',
-                'trainee': 'Uwitoza',
-                'entry_level': 'Urwego rwo Gutangira',
-                'mid_career': 'Urwego rwo Hagati',
-                'senior_level': 'Urwego rwo Hejuru',
-                'positive_attitude': 'Imyitwarire myiza',
-                'team_player': 'Ukora mu itsinda',
-                'self_motivated': 'Ukwishongoza',
-                'reliable': 'Uwizeye',
-                'good_time_manager': 'Ukoresha neza igihe',
-                'adaptable': 'Uhindagurika',
-                'takes_initiative': 'Ufata inshingano',
-                'customer_friendly': 'Wubaha abakiriya',
-                'multiple_positions_compensation': 'Imishahara y\'Imyanya Myinshi',
-                'multiple_positions_note': 'Kubera ko ushaka abakozi benshi, nyamuneka shyiraho imishahara, inyungu, n\'amasaha yo gukora kuri buri mwanya mu gice cy\'Amakuru y\'Imyanya.',
-                'company_description_placeholder': 'Tubwire mu make ibyerekeye ikigo cyawe — icyo gikora n\'icyo cyatuma gitandukana n\'ibindi (interuro 2-3)',
-                'transport_allowance': 'Amafaranga yo kujya no kuva',
-                'meals_lunch': 'Ifunguro/Ibiryo',
-                'health_insurance': 'Ubwishingizi bw\'ubuzima',
-                'training_development': 'Amahugurwa/Iterambere',
-                'commission_bonuses': 'Amafaranga y\'inyongera',
-                'flexible_schedule': 'Gahunda ihindagurika',
-                'preferred_age_range': 'Imyaka Ishakwa',
-                'gender_preference': 'Igitsina Gishakwa',
-                'preferred_location': 'Ahantu Hashakwa',
-                'no_preference': 'Nta kigena',
-                'male': 'Gabo',
-                'female': 'Gore',
-                'any': 'Igitsina cyose',
+                'entrepreneur_name': 'Witwa nte?',
+                'company_name': 'Ikigo cyawe cyitwa nte?',
+                'business_growth_limited': 'Wumva iterambere ry\'ubucuruzi bwawe rihagarikwa n\'ubukene bw\'ubumenyi bw\'ikoranabuhanga, sisitemu, cyangwa ubuyobozi bwo hanze?',
+                'yes_often': 'Yego, kenshi',
+                'sometimes': 'Rimwe na rimwe',
+                'no_fully_equipped': 'Oya, ndumva nfite ibintu byose',
+                'decision_making': 'Ni gute ufata ibyemezo mugihe uhura n\'ibibazo bigoye by\'ubucuruzi (urugero, ibibazo by\'umusaruro, imikorere y\'itsinda, iterambere ry\'isoko)?',
+                'trial_error': 'Nkoresha uburyo bwo kugerageza no gukosora',
+                'ask_friends_peers': 'Mbaza incuti/bagenzi bange',
+                'search_online_trainings': 'Nshakisha kuri interineti cyangwa nitabira amahugurwa',
+                'consult_experts_mentors': 'Nganira n\'impuguke/abayobozi',
+                'top_challenges': 'Ni ibihe bibiri bibazo bikomeye by\'ubucuruzi bwawe ushaka cyane ubufasha bw\'impuguke?',
+                'increasing_sales': 'Kwongera kugurisha',
+                'improving_production': 'Gutezimbere inzira z\'umusaruro',
+                'modernizing_business': 'Kuvugurura ubucuruzi bwanjye',
+                'becoming_sustainable': 'Guhinduka birambye',
+                'optimizing_team': 'Gutunganya imiterere y\'itsinda/imikorere',
+                'improving_quality': 'Gutezimbere ubwiza bw\'ibicuruzwa cyangwa serivisi',
+                'challenge_details': 'Nyamuneka tanga birambuye ku bibazo byihariye uhura nabyo mu bucuruzi bwawe ubu.',
+                'expert_support_areas': 'Niba impuguke mpuzamahanga ishobora kugufasha kure no kuri rusura, ni ibihe bice byihariye wagira ubushake bwo kubona inama nkana cyangwa amahugurwa?',
+                'desired_outcomes': 'Niba ushobora kubona ubuyobozi bwuzuye uhereye ku mpuguke mpuzamahanga, ni ibihe bisubizo bifuza kubona mu bucuruzi bwawe mu mezi 6-12 azaza?',
+                'ready_to_participate': 'Waraguteguye gukurikiza ibyifuzo by\'impuguke no kwitabira ibiganiro byo gukurikirana kugira ubone ingaruka z\'igihe kirekire ku bucuruzi bwawe no mu muryango?',
+                'yes_ready_committed': 'Yego, nditeguye kandi ndiyemeje',
+                'maybe_understand_more': 'Ahari, nshaka gusobanukirwa byinshi',
+                'no_not_at_moment': 'Oya, ntabwo mu gihe gino',
                 // Notification messages
-                'form_submitted_success': 'Ifishi yoherejwe neza!',
-                'form_saved_offline': 'Ifishi yarabitswe. Izohererezwa mugihe ukorana kuri interineti.',
-                'network_error': 'Ikibazo cyo kuragurana. Ifishi yarabitswe, tuzongera tugerageze.',
+                'form_submitted_success': 'Isuzuma ryoherejwe neza!',
+                'form_saved_offline': 'Isuzuma ryabitswe. Rizohererezwa mugihe ukorana kuri interineti.',
+                'network_error': 'Ikibazo cyo kuragurana. Isuzuma ryabitswe, tuzongera tugerageze.',
                 'submission_failed': 'Kohereza byanze. Suzuma niba ukoresha interineti neza.',
                 'connecting': 'Twiragurana...',
                 'retrying': 'Twongera tugerageza...',
                 'admin_logout_success': 'Byasuye neza - ubwiyunge bwasibwe',
                 // User guide translations
-                'guide_title': 'Murakaza neza! Dore uburyo bwo gukoresha ifishi',
-                'guide_step1_title': 'Uzuza amakuru y\'ikigo cyawe',
-                'guide_step1_desc': 'Tangira utanga amakuru y\'ibanze ku kigo cyawe n\'uburyo bwo kubonana. Ibi bituma tumenyera neza ubucuruzi bwawe.',
-                'guide_step2_title': 'Hitamo umurimo umwe cyangwa imirimo myinshi',
-                'guide_step2_desc': 'Hitamo imirimo ushaka gushaka abakozi. Niba uhitamo imirimo myinshi, uzabonera buri murimo ifishi yihariye.',
-                'guide_step3_title': 'Koresha "Paste to:" ku mirimo isa',
-                'guide_step3_desc': 'Kugabanya igihe! Uzuza umurimo umwe wuzuye, hanyuma ukande buto ya "Paste to:" kugira ukopire amakuru yose mu indi mirimo isa. Urashobora gukopira umurimo uwariwo wose mu indi mirimo iyo ariyo yose.',
+                'guide_title': 'Murakaza neza! Dore uburyo bwo gusuzuma ubucuruzi bwawe',
+                'guide_step1_title': 'Sangiza amakuru y\'ubucuruzi bwawe',
+                'guide_step1_desc': 'Tangira utanga amazina yawe n\'amakuru y\'ikigo cyawe. Ibi bituma tumenyera ubucuruzi bwawe maze tugakunikira ubufasha bwiza bw\'impuguke.',
+                'guide_step2_title': 'Menya ibibazo by\'ubucuruzi bwawe',
+                'guide_step2_desc': 'Dufashe gusobanukirwa ibibazo uhari nabyo ubu n\'uburyo ukoresha mugihe uhura n\'ibibazo bigoye by\'ubucuruzi.',
+                'guide_step3_title': 'Sobanura ubufasha ukeneye',
+                'guide_step3_desc': 'Tubwire ibyerekeye ibice byihariye aho ubuyobozi bw\'impuguke bushobora gufasha ubucuruzi bwawe gukura n\'ibisubizo ufite ubwoba bwo kubona.',
                 'guide_step4_title': 'Hindura ururimi igihe icyo ari cyo cyose',
                 'guide_step4_desc': 'Koresha utubuto tw\'amabendera ku ruhande rwo hejuru kugira uhindure hagati y\'Icyongereza na Kinyarwanda. Aho wageze hifashwe mu buryo bwikora.',
-                'guide_step5_title': 'Auto-save igumana akazi kawe',
-                'guide_step5_desc': 'Ntugire impungenge zo gutakaza akazi kawe! Ifishi igumana byikora uko wagenda wandika, kandi ikakora nubwo udafite internet.',
-                'guide_start_using': 'Tangira Gukoresha Ifishi',
+                'guide_step5_title': 'Emeza kwiyemeza kwawe',
+                'guide_step5_desc': 'Intambwe ya nyuma ni ugoemeza ko waraguteguye gukorana n\'impuguke no kwitabira ibiganiro byo gukurikirana kugira ubucuruzi bwawe bufite ingaruka zirambye.',
+                'guide_start_using': 'Tangira Isuzuma',
                 'guide_dont_show': 'Ntuyerekane uyu mubonano nanone'
             }
         };
@@ -235,7 +161,7 @@ class SimpleFormSubmit {
         this.initUserGuide();
         
         // Find form and button
-        this.form = document.getElementById('employerDiagnosticForm');
+        this.form = document.getElementById('entrepreneurSurveyForm');
         this.submitBtn = document.getElementById('submitBtn');
         
         if (!this.form) {
@@ -2110,7 +2036,7 @@ class SimpleFormSubmit {
             // Try Firebase first
             if (window.firebaseConfig && window.firebaseConfig.getCollection) {
                 console.log('Attempting Firebase connection...');
-                const result = await window.firebaseConfig.getCollection('employer-diagnostics');
+                const result = await window.firebaseConfig.getCollection('entrepreneur-surveys');
                 console.log('Firebase result:', result);
                 
                 if (result && result.success && result.data && result.data.length > 0) {
@@ -2125,7 +2051,7 @@ class SimpleFormSubmit {
             
             // Always try localStorage as fallback
             if (responses.length === 0) {
-                const localData = JSON.parse(localStorage.getItem('employer-submissions') || '[]');
+                const localData = JSON.parse(localStorage.getItem('entrepreneur-submissions') || '[]');
                 responses = localData;
                 console.log('Using localStorage data:', responses.length, 'responses');
             }
@@ -3450,7 +3376,7 @@ class SimpleFormSubmit {
 
     clearLocalStorage() {
         if (confirm('Are you sure you want to clear all local storage data? This cannot be undone.')) {
-            localStorage.removeItem('employer-submissions');
+            localStorage.removeItem('entrepreneur-submissions');
             localStorage.removeItem('latest-submission');
             this.loadAdminData();
             Utils.showSuccess('Local storage cleared');
@@ -3465,7 +3391,7 @@ class SimpleFormSubmit {
                 return;
             }
             
-            const result = await window.firebaseConfig.getCollection('employer-diagnostics');
+            const result = await window.firebaseConfig.getCollection('entrepreneur-surveys');
             console.log('Firebase collection result:', result);
             
             if (result && result.success && result.data && result.data.length > 0) {
@@ -4313,7 +4239,7 @@ class SimpleFormSubmit {
             }
 
             console.log('Attempting Firebase submission...');
-            const result = await window.firebaseConfig.createDocument('employer-diagnostics', formData);
+            const result = await window.firebaseConfig.createDocument('entrepreneur-surveys', formData);
             
             if (result && result.success) {
                 console.log('Firebase submission successful:', result.id);
@@ -4333,7 +4259,7 @@ class SimpleFormSubmit {
         const data = {
             submissionId: 'SUBMIT_' + Date.now(),
             submittedAt: new Date().toISOString(),
-            formType: 'employer-diagnostic'
+            formType: 'entrepreneur-survey'
         };
         
         // Get all form inputs

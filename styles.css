@@ -1496,6 +1496,33 @@ textarea.form-control {
     color: var(--color-dark);
 }
 
+/* Other option within checkbox groups */
+.checkbox-label.other-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.checkbox-label.other-option .other-input {
+    flex: 1;
+    min-width: 150px;
+    padding: 0.5rem;
+    margin-left: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.checkbox-label.other-option .other-input:focus {
+    outline: none;
+    border-color: rgba(45, 212, 191, 0.4);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.1);
+}
+
 .survey-navigation {
     display: flex;
     justify-content: space-between;

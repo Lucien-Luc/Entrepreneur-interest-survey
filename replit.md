@@ -1,8 +1,8 @@
-# BPN Survey Platform
+# Expert Support Matching Platform
 
 ## Overview
 
-The BPN Survey Platform is a comprehensive web-based survey application enabling users to create, distribute, and analyze surveys. It features a responsive interface with admin capabilities for survey management and analytics. Built with vanilla JavaScript and Firebase backend services, it provides a full-featured survey solution designed for a clean, efficient user experience. Its business vision is to provide a robust, easy-to-use survey tool for organizations, with a focus on talent fair insights and employer diagnostics, ultimately aiming to streamline data collection and analysis for events like the Talent Fair.
+The Expert Support Matching Platform is a comprehensive web-based survey application designed to connect entrepreneurs with expert support for business growth. The platform has been transformed from an employer diagnostic tool to an entrepreneur assessment system that captures business challenges and matches users with appropriate expert guidance. Built with vanilla JavaScript and Firebase backend services, it provides a streamlined assessment experience focusing on business growth needs, expert support matching, and commitment evaluation.
 
 ## User Preferences
 
@@ -23,10 +23,10 @@ Firebase serves as the Backend-as-a-Service, utilizing Firestore for real-time d
 - **Error Handling**: Comprehensive error handling system with bilingual toast notifications.
 - **Offline Capabilities**: Automatic form draft saving and offline submission queuing with retry functionality, including network connectivity detection.
 - **Admin Access**: Secure single admin registration system with smart authentication forms and long-press authentication on the BPN logo.
-- **Multi-Position Form**: Grid layout for multiple roles, including a "Copy from Position" feature for efficient data entry.
+- **Survey Structure**: Four-section entrepreneur assessment covering Personal/Business Info, Current Challenges, Expert Support Needs, and Commitment/Follow-up.
 - **Localization**: Full Kinyarwanda language support with a dual-language switcher and cultural localization.
-- **Analytics**: Replaced generic metrics with employer-focused analytics such as "Registered Employers," "Job Openings," "Top Industry," and "Urgent Hiring."
-- **Export Functionality**: Comprehensive Excel export with separate sheets for Companies Summary and Position Details.
+- **Analytics**: Updated metrics to focus on entrepreneur assessments, business challenges, and support matching data.
+- **Export Functionality**: Excel export functionality for entrepreneur survey responses and business assessment data.
 - **Loading Experience**: Sophisticated loading animation for admin login.
 - **Design Philosophy**: A unique, non-generic design overhaul with premium visual effects, subtle animations, and enhanced typography to stand out.
 
