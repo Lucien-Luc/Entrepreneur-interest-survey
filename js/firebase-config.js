@@ -54,12 +54,51 @@ class FirebaseConfig {
             });
             
             console.log('Firebase initialized successfully');
+            console.log('Firebase config:', this.config);
+            console.log('Database instance:', this.db);
+            
+            // Test connection
+            this.testConnection();
         } catch (error) {
             console.error('Firebase initialization error:', error);
             this.showConfigError();
         }
     }
     
+    async testConnection() {
+        try {
+            console.log('Testing Firebase connection...');
+            
+            // Test 1: Try to read a collection (should work with current rules)
+            const testResult = await this.getCollection('entrepreneur-surveys', null, 1);
+            console.log('Read test result:', testResult);
+            
+            // Test 2: Try a simple write test (this should work as rules allow public create)
+            const testData = {
+                test: true,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                message: 'Connection test'
+            };
+            
+            const writeResult = await this.createDocument('entrepreneur-surveys', testData);
+            console.log('Write test result:', writeResult);
+            
+            if (writeResult.success) {
+                console.log('✅ Firebase connection test successful');
+                // Clean up test document
+                if (writeResult.id) {
+                    await this.db.collection('entrepreneur-surveys').doc(writeResult.id).delete();
+                    console.log('Test document cleaned up');
+                }
+            } else {
+                console.error('❌ Firebase write test failed:', writeResult.error);
+            }
+            
+        } catch (error) {
+            console.error('❌ Firebase connection test error:', error);
+        }
+    }
+
     onAuthStateChanged(user) {
         // This will be overridden by the main app
         if (window.app && window.app.handleAuthStateChange) {

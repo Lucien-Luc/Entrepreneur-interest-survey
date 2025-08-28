@@ -4247,24 +4247,32 @@ class SimpleFormSubmit {
     // Enhanced Firebase submission with proper error handling
     async submitToFirebase(formData) {
         try {
+            console.log('🔍 Checking Firebase availability...');
+            console.log('window.firebaseConfig exists:', !!window.firebaseConfig);
+            console.log('createDocument method exists:', !!(window.firebaseConfig && window.firebaseConfig.createDocument));
+            
             if (!window.firebaseConfig || !window.firebaseConfig.createDocument) {
-                console.log('Firebase not available');
+                console.error('❌ Firebase not available or createDocument method missing');
                 return false;
             }
 
-            console.log('Attempting Firebase submission...');
+            console.log('📤 Attempting Firebase submission...');
+            console.log('Submitting data:', JSON.stringify(formData, null, 2));
+            
             const result = await window.firebaseConfig.createDocument('entrepreneur-surveys', formData);
+            console.log('🔍 Firebase submission result:', result);
             
             if (result && result.success) {
-                console.log('Firebase submission successful:', result.id);
+                console.log('✅ Firebase submission successful:', result.id);
                 return true;
             } else {
-                console.error('Firebase submission failed:', result.error);
+                console.error('❌ Firebase submission failed:', result ? result.error : 'No result returned');
                 return false;
             }
             
         } catch (error) {
-            console.error('Firebase submission error:', error);
+            console.error('💥 Firebase submission error:', error);
+            console.error('Error stack:', error.stack);
             return false;
         }
     }
