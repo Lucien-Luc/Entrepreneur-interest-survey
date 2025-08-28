@@ -766,8 +766,12 @@ class SimpleFormSubmit {
     }
 
     async createAdmin() {
+        console.log('createAdmin called');
+        
         const password = document.getElementById('adminSetupPassword').value;
         const confirmPassword = document.getElementById('adminConfirmPassword').value;
+        
+        console.log('Password values:', password ? 'provided' : 'empty', confirmPassword ? 'provided' : 'empty');
         
         if (!password || password.length < 6) {
             alert('Password must be at least 6 characters long');
@@ -780,15 +784,23 @@ class SimpleFormSubmit {
         }
         
         try {
+            console.log('Checking Firebase availability...');
+            console.log('window.firebaseConfig:', window.firebaseConfig);
+            console.log('createDocument method:', window.firebaseConfig?.createDocument);
+            
             // Create admin in Firebase
             if (window.firebaseConfig && window.firebaseConfig.createDocument) {
+                console.log('Creating admin document...');
                 const result = await window.firebaseConfig.createDocument('admins', {
                     password: password,
                     createdAt: new Date().toISOString(),
                     lastLogin: null
                 });
                 
+                console.log('Admin creation result:', result);
+                
                 if (result.success) {
+                    console.log('Admin created successfully, creating session...');
                     // Create persistent session for new admin
                     this.createAdminSession();
                     
@@ -798,11 +810,13 @@ class SimpleFormSubmit {
                         popup.remove();
                     }
                     this.showAdminPanel();
-                    Utils.showSuccess('Admin account created successfully');
+                    this.showToast('admin_created_success', 'success');
                 } else {
+                    console.error('Admin creation failed:', result.error);
                     alert('Error creating admin account: ' + result.error);
                 }
             } else {
+                console.error('Firebase not available');
                 alert('Firebase not available. Cannot create admin account.');
             }
         } catch (error) {
