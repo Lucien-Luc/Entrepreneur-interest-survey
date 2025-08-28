@@ -1107,8 +1107,8 @@ class SimpleFormSubmit {
                 <!-- Header Section -->
                 <div class="admin-header">
                     <div class="admin-header-left">
-                        <h1><i class="fas fa-shield-alt"></i> Talent Fair Dashboard</h1>
-                        <p class="admin-subtitle">Employer Registration & Analytics</p>
+                        <h1><i class="fas fa-shield-alt"></i> Expert Support Matching Dashboard</h1>
+                        <p class="admin-subtitle">Entrepreneur Assessment & Analytics</p>
                     </div>
                     <div class="admin-header-right">
                         <button class="btn btn-warning" onclick="window.simpleFormSubmit.logoutAdmin()">
@@ -1128,7 +1128,7 @@ class SimpleFormSubmit {
                         <div class="stats-section">
                             <div class="section-title">
                                 <i class="fas fa-chart-bar"></i>
-                                <span>Talent Fair Overview</span>
+                                <span>Entrepreneur Assessment Overview</span>
                             </div>
                             <div class="stats-grid">
                                 <div class="stat-card primary">
@@ -1136,8 +1136,8 @@ class SimpleFormSubmit {
                                         <i class="fas fa-building"></i>
                                     </div>
                                     <div class="stat-content">
-                                        <div class="stat-number" id="totalEmployers">0</div>
-                                        <div class="stat-label">Registered Employers</div>
+                                        <div class="stat-number" id="totalEntrepreneurs">0</div>
+                                        <div class="stat-label">Entrepreneurs Assessed</div>
                                     </div>
                                 </div>
                                 <div class="stat-card success">
@@ -1145,8 +1145,8 @@ class SimpleFormSubmit {
                                         <i class="fas fa-users"></i>
                                     </div>
                                     <div class="stat-content">
-                                        <div class="stat-number" id="totalPositions">0</div>
-                                        <div class="stat-label">Job Openings</div>
+                                        <div class="stat-number" id="totalChallenges">0</div>
+                                        <div class="stat-label">Business Challenges</div>
                                     </div>
                                 </div>
                                 <div class="stat-card info">
@@ -1154,8 +1154,8 @@ class SimpleFormSubmit {
                                         <i class="fas fa-industry"></i>
                                     </div>
                                     <div class="stat-content">
-                                        <div class="stat-number" id="topIndustry">-</div>
-                                        <div class="stat-label">Top Industry</div>
+                                        <div class="stat-number" id="topChallenge">-</div>
+                                        <div class="stat-label">Top Challenge Area</div>
                                     </div>
                                 </div>
                                 <div class="stat-card warning">
@@ -1163,8 +1163,8 @@ class SimpleFormSubmit {
                                         <i class="fas fa-clock"></i>
                                     </div>
                                     <div class="stat-content">
-                                        <div class="stat-number" id="urgentHiring">0</div>
-                                        <div class="stat-label">Urgent Hiring</div>
+                                        <div class="stat-number" id="readyCommitted">0</div>
+                                        <div class="stat-label">Ready & Committed</div>
                                     </div>
                                 </div>
                             </div>
@@ -2087,24 +2087,24 @@ class SimpleFormSubmit {
     }
 
     updateAnalytics(responses) {
-        // Calculate meaningful metrics for talent fair
-        const totalEmployers = responses.length;
-        const totalPositions = this.calculateTotalPositions(responses);
-        const topIndustry = this.getTopIndustry(responses);
-        const urgentHiring = this.getUrgentHiring(responses);
+        // Calculate meaningful metrics for entrepreneur assessment
+        const totalEntrepreneurs = responses.length;
+        const totalChallenges = this.calculateTotalChallenges(responses);
+        const topChallenge = this.getTopChallenge(responses);
+        const readyCommitted = this.getReadyCommitted(responses);
         
         // Update display - use correct element IDs
-        const totalEmployersEl = document.getElementById('totalEmployers');
-        const totalPositionsEl = document.getElementById('totalPositions');
-        const topIndustryEl = document.getElementById('topIndustry');
-        const urgentHiringEl = document.getElementById('urgentHiring');
+        const totalEntrepreneursEl = document.getElementById('totalEntrepreneurs');
+        const totalChallengesEl = document.getElementById('totalChallenges');
+        const topChallengeEl = document.getElementById('topChallenge');
+        const readyCommittedEl = document.getElementById('readyCommitted');
         
-        if (totalEmployersEl) totalEmployersEl.textContent = totalEmployers;
-        if (totalPositionsEl) totalPositionsEl.textContent = totalPositions;
-        if (topIndustryEl) topIndustryEl.textContent = topIndustry;
-        if (urgentHiringEl) urgentHiringEl.textContent = urgentHiring;
+        if (totalEntrepreneursEl) totalEntrepreneursEl.textContent = totalEntrepreneurs;
+        if (totalChallengesEl) totalChallengesEl.textContent = totalChallenges;
+        if (topChallengeEl) topChallengeEl.textContent = topChallenge;
+        if (readyCommittedEl) readyCommittedEl.textContent = readyCommitted;
         
-        console.log('Analytics updated:', { totalEmployers, totalPositions, topIndustry, urgentHiring });
+        console.log('Analytics updated:', { totalEntrepreneurs, totalChallenges, topChallenge, readyCommitted });
         
         // Add click handlers for detailed popups
         this.addAnalyticsClickHandlers(responses);
@@ -2115,34 +2115,34 @@ class SimpleFormSubmit {
     
     addAnalyticsClickHandlers(responses) {
         // Make analytics cards clickable
-        const totalEmployersEl = document.getElementById('totalEmployers');
-        const totalPositionsEl = document.getElementById('totalPositions');
-        const topIndustryEl = document.getElementById('topIndustry');
-        const urgentHiringEl = document.getElementById('urgentHiring');
+        const totalEntrepreneursEl = document.getElementById('totalEntrepreneurs');
+        const totalChallengesEl = document.getElementById('totalChallenges');
+        const topChallengeEl = document.getElementById('topChallenge');
+        const readyCommittedEl = document.getElementById('readyCommitted');
         
-        const totalEmployersCard = totalEmployersEl ? totalEmployersEl.closest('.stat-card') : null;
-        const totalPositionsCard = totalPositionsEl ? totalPositionsEl.closest('.stat-card') : null;
-        const topIndustryCard = topIndustryEl ? topIndustryEl.closest('.stat-card') : null;
-        const urgentHiringCard = urgentHiringEl ? urgentHiringEl.closest('.stat-card') : null;
+        const totalEntrepreneursCard = totalEntrepreneursEl ? totalEntrepreneursEl.closest('.stat-card') : null;
+        const totalChallengesCard = totalChallengesEl ? totalChallengesEl.closest('.stat-card') : null;
+        const topChallengeCard = topChallengeEl ? topChallengeEl.closest('.stat-card') : null;
+        const readyCommittedCard = readyCommittedEl ? readyCommittedEl.closest('.stat-card') : null;
         
-        if (totalEmployersCard) {
-            totalEmployersCard.style.cursor = 'pointer';
-            totalEmployersCard.onclick = () => this.showEmployersDetailPopup(responses);
+        if (totalEntrepreneursCard) {
+            totalEntrepreneursCard.style.cursor = 'pointer';
+            totalEntrepreneursCard.onclick = () => this.showEntrepreneursDetailPopup(responses);
         }
         
-        if (totalPositionsCard) {
-            totalPositionsCard.style.cursor = 'pointer';
-            totalPositionsCard.onclick = () => this.showPositionsDetailPopup(responses);
+        if (totalChallengesCard) {
+            totalChallengesCard.style.cursor = 'pointer';
+            totalChallengesCard.onclick = () => this.showChallengesDetailPopup(responses);
         }
         
-        if (topIndustryCard) {
-            topIndustryCard.style.cursor = 'pointer';
-            topIndustryCard.onclick = () => this.showIndustryDetailPopup(responses);
+        if (topChallengeCard) {
+            topChallengeCard.style.cursor = 'pointer';
+            topChallengeCard.onclick = () => this.showTopChallengeDetailPopup(responses);
         }
         
-        if (urgentHiringCard) {
-            urgentHiringCard.style.cursor = 'pointer';
-            urgentHiringCard.onclick = () => this.showUrgentHiringDetailPopup(responses);
+        if (readyCommittedCard) {
+            readyCommittedCard.style.cursor = 'pointer';
+            readyCommittedCard.onclick = () => this.showReadyCommittedDetailPopup(responses);
         }
         
         console.log('Analytics click handlers added');
@@ -2351,61 +2351,43 @@ class SimpleFormSubmit {
         setTimeout(() => popup.classList.add('show'), 100);
     }
     
-    calculateTotalPositions(responses) {
-        // Calculate total job openings from all responses
+    calculateTotalChallenges(responses) {
+        // Calculate total business challenges from all entrepreneur responses
         return responses.reduce((total, response) => {
-            // Check for multiple positions data structure
-            if (response.positions && Array.isArray(response.positions)) {
-                return total + response.positions.length;
+            if (response.topChallenges && Array.isArray(response.topChallenges)) {
+                return total + response.topChallenges.length;
             }
-            // Check for single position number from our form
-            const positions = response.positionsAvailable || response.numberOfPositions || 1;
-            return total + (parseInt(positions) || 1);
+            // Each entrepreneur has at least one challenge
+            return total + 1;
         }, 0);
     }
 
-    getTopIndustry(responses) {
+    getTopChallenge(responses) {
         if (responses.length === 0) return '-';
         
-        // Count industries
-        const industryCount = {};
+        // Count challenge types
+        const challengeCount = {};
         responses.forEach(response => {
-            const industry = response.industry || 'Other';
-            industryCount[industry] = (industryCount[industry] || 0) + 1;
+            if (response.topChallenges && Array.isArray(response.topChallenges)) {
+                response.topChallenges.forEach(challenge => {
+                    const cleanChallenge = challenge.replace(/-/g, ' ').replace(/^\w/, c => c.toUpperCase());
+                    challengeCount[cleanChallenge] = (challengeCount[cleanChallenge] || 0) + 1;
+                });
+            }
         });
         
-        // Find top industry
-        const topIndustry = Object.entries(industryCount)
+        // Find top challenge
+        const topChallenge = Object.entries(challengeCount)
             .sort(([,a], [,b]) => b - a)[0];
         
-        return topIndustry ? topIndustry[0] : '-';
+        return topChallenge ? topChallenge[0] : '-';
     }
 
-    getUrgentHiring(responses) {
-        // Count employers with urgent hiring needs (looking for immediate start or less than 3 months)
+    getReadyCommitted(responses) {
+        // Count entrepreneurs who are ready and committed to expert support
         return responses.filter(response => {
-            const startDate = this.getFieldValue(response, 'startDate', '');
-            const additionalNotes = (this.getFieldValue(response, 'additionalNotes', '') || '').toLowerCase();
-            
-            if (startDate) {
-                try {
-                    const start = new Date(startDate);
-                    if (!isNaN(start.getTime())) {
-                        const now = new Date();
-                        const diffMonths = (start - now) / (1000 * 60 * 60 * 24 * 30);
-                        if (diffMonths <= 3) return true;
-                    }
-                } catch (error) {
-                    // Invalid date, skip this check
-                }
-            }
-            
-            // Check for urgent keywords in additional notes and other fields
-            return additionalNotes.includes('urgent') || 
-                   additionalNotes.includes('immediate') ||
-                   additionalNotes.includes('asap') ||
-                   additionalNotes.includes('soon') ||
-                   additionalNotes.includes('quickly');
+            const commitment = response.readyToParticipate || '';
+            return commitment === 'yes-ready-committed';
         }).length;
     }
 
@@ -2727,8 +2709,8 @@ class SimpleFormSubmit {
             <div class="response-item enhanced">
                 <div class="response-header">
                     <div class="response-company">
-                        <i class="fas fa-building"></i>
-                        <strong>${response.companyName || 'Unknown Company'}</strong>
+                        <i class="fas fa-user-tie"></i>
+                        <strong>${response.entrepreneurName || 'Unknown Entrepreneur'}</strong>
                     </div>
                     <div class="response-time">
                         <i class="fas fa-clock"></i>
@@ -2737,16 +2719,16 @@ class SimpleFormSubmit {
                 </div>
                 <div class="response-details">
                     <div class="response-detail">
-                        <i class="fas fa-industry"></i>
-                        <span>${response.industry || 'Not specified'}</span>
+                        <i class="fas fa-building"></i>
+                        <span>${response.companyName || 'Not specified'}</span>
                     </div>
                     <div class="response-detail">
-                        <i class="fas fa-briefcase"></i>
-                        <span>${this.getPositionSummary(response)}</span>
+                        <i class="fas fa-chart-line"></i>
+                        <span>${this.getChallengeSummary(response)}</span>
                     </div>
                     <div class="response-detail">
-                        <i class="fas fa-money-bill-wave"></i>
-                        <span>${this.getFieldValue(response, 'salaryRange')}</span>
+                        <i class="fas fa-handshake"></i>
+                        <span>${this.getCommitmentLevel(response)}</span>
                     </div>
                 </div>
                 <div class="response-actions">
@@ -2771,6 +2753,29 @@ class SimpleFormSubmit {
         if (hours < 24) return `${hours}h ago`;
         if (days < 7) return `${days}d ago`;
         return date.toLocaleDateString();
+    }
+    
+    getChallengeSummary(response) {
+        if (response.topChallenges && Array.isArray(response.topChallenges)) {
+            const first = response.topChallenges[0] ? response.topChallenges[0].replace(/-/g, ' ').replace(/^\w/, c => c.toUpperCase()) : '';
+            const count = response.topChallenges.length;
+            return count > 1 ? `${first} + ${count - 1} more` : first;
+        }
+        return 'Business growth challenges';
+    }
+    
+    getCommitmentLevel(response) {
+        const commitment = response.readyToParticipate || '';
+        switch (commitment) {
+            case 'yes-ready-committed':
+                return 'Ready & Committed';
+            case 'maybe-understand-more':
+                return 'Wants to learn more';
+            case 'no-not-at-moment':
+                return 'Not ready yet';
+            default:
+                return 'Not specified';
+        }
     }
 
     async exportResponses() {
