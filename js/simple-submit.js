@@ -2394,13 +2394,73 @@ class SimpleFormSubmit {
     getTodayResponseCount(responses) {
         const today = new Date().toDateString();
         return responses.filter(r => {
-            const timestamp = r.timestamp || r.submittedAt;
+            const timestamp = r.timestamp || r.submittedAt || r.createdAt;
             if (!timestamp) return false;
             try {
                 return new Date(timestamp).toDateString() === today;
             } catch (error) {
                 return false;
             }
+        }).length;
+    }
+
+    // New breakdown methods for entrepreneur survey data
+    getChallengesBreakdown(responses) {
+        const breakdown = {};
+        responses.forEach(response => {
+            if (response.topChallenges && Array.isArray(response.topChallenges)) {
+                response.topChallenges.forEach(challenge => {
+                    const cleanChallenge = challenge.replace(/-/g, ' ').replace(/^\w/, c => c.toUpperCase());
+                    breakdown[cleanChallenge] = (breakdown[cleanChallenge] || 0) + 1;
+                });
+            }
+        });
+        return Object.entries(breakdown)
+            .map(([name, count]) => ({ name, count }))
+            .sort((a, b) => b.count - a.count);
+    }
+
+    getDecisionMakingBreakdown(responses) {
+        const breakdown = {};
+        responses.forEach(response => {
+            const approach = response.decisionMaking || 'Not specified';
+            const cleanApproach = approach.replace(/-/g, ' ').replace(/^\w/, c => c.toUpperCase());
+            breakdown[cleanApproach] = (breakdown[cleanApproach] || 0) + 1;
+        });
+        return Object.entries(breakdown)
+            .map(([name, count]) => ({ name, count }))
+            .sort((a, b) => b.count - a.count);
+    }
+
+    getCommitmentBreakdown(responses) {
+        const breakdown = {};
+        responses.forEach(response => {
+            const commitment = response.readyToParticipate || 'Not specified';
+            let cleanCommitment;
+            switch(commitment) {
+                case 'yes-ready-committed':
+                    cleanCommitment = 'Yes, ready and committed';
+                    break;
+                case 'maybe-understand-more':
+                    cleanCommitment = 'Maybe, want to understand more';
+                    break;
+                case 'no-not-at-moment':
+                    cleanCommitment = 'No, not at the moment';
+                    break;
+                default:
+                    cleanCommitment = 'Not specified';
+            }
+            breakdown[cleanCommitment] = (breakdown[cleanCommitment] || 0) + 1;
+        });
+        return Object.entries(breakdown)
+            .map(([name, count]) => ({ name, count }))
+            .sort((a, b) => b.count - a.count);
+    }
+
+    getGrowthLimitedCount(responses) {
+        return responses.filter(response => {
+            const growth = response.businessGrowthLimited || '';
+            return growth === 'yes-often';
         }).length;
     }
 
@@ -2821,99 +2881,81 @@ class SimpleFormSubmit {
     }
     
     prepareExcelData(responses) {
-        // Create multiple sheets for comprehensive data export
-        const mainSheet = [];
-        const positionDetailSheet = [];
-        let positionCounter = 1;
+        // Create multiple sheets for comprehensive entrepreneur survey data export
+        const entrepreneursSheet = [];
+        const challengesSheet = [];
         
         // Process each response
         responses.forEach((response, responseIndex) => {
-            const positions = this.getAllPositions(response);
-            
-            // Add company info to main sheet (one row per company)
-            mainSheet.push({
+            // Add entrepreneur info to main sheet
+            entrepreneursSheet.push({
                 'Response ID': responseIndex + 1,
+                'Entrepreneur Name': response.entrepreneurName || 'Not provided',
                 'Company Name': response.companyName || 'Not provided',
-                'Contact Person': response.contactPerson || 'Not provided',
-                'Company Website': response.companyWebsite || 'Not provided',
-                'Company Location': response.companyLocation || 'Not provided',
-                'Industry': response.industry || 'Not provided',
-                'Company Description': response.companyDescription || 'Not provided',
-                'Total Positions': positions.length,
-                'Positions Available': response.positionsAvailable || 'Not provided',
-                'Submitted Date': this.formatDate(response.submittedAt || response.timestamp, 'Not recorded'),
+                'Business Growth Limited': response.businessGrowthLimited || 'Not specified',
+                'Decision Making Approach': response.decisionMaking || 'Not specified',
+                'Top Challenges': this.formatArrayField(response.topChallenges || []),
+                'Challenge Details': response.challengeDetails || 'Not provided',
+                'Expert Support Areas': response.expertSupportAreas || 'Not provided',
+                'Desired Outcomes': response.desiredOutcomes || 'Not provided',
+                'Ready to Participate': response.readyToParticipate || 'Not specified',
+                'Submitted Date': this.formatDate(response.submittedAt || response.timestamp || response.createdAt, 'Not recorded'),
                 'Completion Time': response.completionTime ? Math.round(response.completionTime / 60000) + ' minutes' : 'Not tracked'
             });
             
-            // Add detailed position information (one row per position)
-            positions.forEach((position, positionIndex) => {
-                positionDetailSheet.push({
-                    'Position ID': positionCounter++,
+            // Add detailed challenge analysis
+            const challenges = Array.isArray(response.topChallenges) ? response.topChallenges : [];
+            challenges.forEach((challenge, challengeIndex) => {
+                challengesSheet.push({
                     'Response ID': responseIndex + 1,
+                    'Entrepreneur Name': response.entrepreneurName || 'Not provided',
                     'Company Name': response.companyName || 'Not provided',
-                    'Position Number': positionIndex + 1,
-                    'Job Title': position.jobTitle || 'Not specified',
-                    'Work Type': position.workType || 'Not specified',
-                    'Work Mode': position.workMode || 'Not specified',
-                    'Expected Start Date': this.formatDate(position.startDate, 'Not specified'),
-                    'Contract Type': position.contractType || 'Not specified',
-                    'Job Summary': position.jobSummary || 'Not provided',
-                    'Key Responsibilities': position.keyResponsibilities || 'Not provided',
-                    'Experience Level': position.experienceLevel || 'Not specified',
-                    'Education Level': position.educationLevel || 'Not specified',
-                    'Technical Skills': position.technicalSkills || 'Not specified',
-                    'Behavioral Skills': this.formatArrayField(position.behavioralSkills || []),
-                    'Other Behavioral Skills': position.otherBehavioralSkills || 'Not specified',
-                    'Work Environment': position.workEnvironment || 'Not specified',
-                    'Preferred Age Range': position.idealAge || 'Not specified',
-                    'Gender Preference': position.idealGender || 'Not specified',
-                    'Preferred Location': position.idealLocation || 'Not specified',
-                    'Salary Range': position.salaryRange || 'Not specified',
-                    'Benefits': this.formatArrayField(position.benefits || []),
-                    'Other Benefits': position.otherBenefits || 'Not specified',
-                    'Working Hours': position.workingHours || 'Not specified',
-                    'Additional Notes': position.additionalNotes || 'Not specified'
+                    'Challenge Number': challengeIndex + 1,
+                    'Challenge Type': challenge || 'Not specified',
+                    'Business Growth Limited': response.businessGrowthLimited || 'Not specified',
+                    'Decision Making Approach': response.decisionMaking || 'Not specified',
+                    'Ready to Participate': response.readyToParticipate || 'Not specified'
                 });
             });
         });
         
-        // Create analytics sheet
+        // Create analytics sheet for entrepreneur data
         const analyticsSheet = [
-            { 'Metric': 'Total Responses', 'Value': responses.length },
-            { 'Metric': 'Total Job Openings', 'Value': this.calculateTotalPositions(responses) },
-            { 'Metric': 'Average Positions per Company', 'Value': responses.length > 0 ? (this.calculateTotalPositions(responses) / responses.length).toFixed(1) : 0 },
-            { 'Metric': 'Top Industry', 'Value': this.getTopIndustry(responses) },
-            { 'Metric': 'Urgent Hiring Count', 'Value': this.getUrgentHiring(responses) },
+            { 'Metric': 'Total Entrepreneurs Assessed', 'Value': responses.length },
+            { 'Metric': 'Total Challenges Identified', 'Value': this.calculateTotalChallenges(responses) },
+            { 'Metric': 'Ready & Committed Count', 'Value': this.getReadyCommitted(responses) },
+            { 'Metric': 'Top Challenge Area', 'Value': this.getTopChallenge(responses) },
+            { 'Metric': 'Growth Limited (Often)', 'Value': this.getGrowthLimitedCount(responses) },
             { 'Metric': 'Today\'s Submissions', 'Value': this.getTodayResponseCount(responses) },
             { 'Metric': 'Export Date', 'Value': this.formatDate(new Date(), 'Now') }
         ];
         
-        // Create breakdown sheets
-        const industrySheet = this.getIndustryBreakdown(responses).map(item => ({
-            'Industry': item.name,
+        // Create breakdown sheets for entrepreneur data
+        const challengesBreakdown = this.getChallengesBreakdown(responses).map(item => ({
+            'Challenge Type': item.name,
+            'Count': item.count,
+            'Percentage': ((item.count / this.calculateTotalChallenges(responses)) * 100).toFixed(1) + '%'
+        }));
+        
+        const decisionMakingBreakdown = this.getDecisionMakingBreakdown(responses).map(item => ({
+            'Decision Making Approach': item.name,
             'Count': item.count,
             'Percentage': ((item.count / responses.length) * 100).toFixed(1) + '%'
         }));
         
-        const workTypeSheet = this.getJobTypeBreakdown(responses).map(item => ({
-            'Work Type': item.name,
-            'Count': item.count,
-            'Percentage': ((item.count / responses.length) * 100).toFixed(1) + '%'
-        }));
-        
-        const workModeSheet = this.getWorkModeBreakdown(responses).map(item => ({
-            'Work Mode': item.name,
+        const commitmentBreakdown = this.getCommitmentBreakdown(responses).map(item => ({
+            'Commitment Level': item.name,
             'Count': item.count,
             'Percentage': ((item.count / responses.length) * 100).toFixed(1) + '%'
         }));
         
         return {
-            'Companies Summary': mainSheet,
-            'Position Details': positionDetailSheet,
+            'Entrepreneur Assessments': entrepreneursSheet,
+            'Business Challenges': challengesSheet,
             'Analytics Summary': analyticsSheet,
-            'Industry Breakdown': industrySheet,
-            'Work Type Breakdown': workTypeSheet,
-            'Work Mode Breakdown': workModeSheet
+            'Challenges Breakdown': challengesBreakdown,
+            'Decision Making Breakdown': decisionMakingBreakdown,
+            'Commitment Breakdown': commitmentBreakdown
         };
     }
     
@@ -3269,7 +3311,7 @@ class SimpleFormSubmit {
         
         // Generate filename with timestamp
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-        const filename = `BPN-Survey-Export-${timestamp}.xlsx`;
+        const filename = `Expert-Support-Matching-Export-${timestamp}.xlsx`;
         
         // Save file
         XLSX.writeFile(wb, filename);
