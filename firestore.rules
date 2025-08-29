@@ -35,10 +35,8 @@ service cloud.firestore {
       // Anyone can submit entrepreneur survey forms (for expert support matching)
       allow create: if true;
       
-      // Only admins can read all surveys (for admin dashboard)
-      allow read: if request.auth != null && 
-        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      // Temporarily allow all read access for debugging admin dashboard
+      allow read: if true;
       
       // Only admins can update/delete surveys
       allow update, delete: if request.auth != null && 

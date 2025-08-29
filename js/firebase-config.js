@@ -273,7 +273,9 @@ class FirebaseConfig {
                 query = query.limit(limit);
             }
             
+            console.log('🔍 FIREBASE DEBUG: Querying collection:', collection);
             const snapshot = await query.get();
+            console.log('🔍 FIREBASE DEBUG: Query returned documents:', snapshot.size);
             const docs = [];
             snapshot.forEach(doc => {
                 docs.push({ id: doc.id, ...doc.data() });
