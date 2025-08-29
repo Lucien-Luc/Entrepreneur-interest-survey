@@ -4415,13 +4415,13 @@ class SimpleFormSubmit {
                     <i class="fas fa-check"></i>
                 </div>
                 <h1 class="notification-title">Success!</h1>
-                <p class="notification-message">Your employer diagnostic form has been submitted successfully.</p>
+                <p class="notification-message">Thank you for completing the Expert Support Matching survey! We will review your information and connect you with the right expert support for your business growth needs.</p>
                 <div class="notification-details">
                     <strong>Submission ID:</strong> ${data.submissionId}<br>
                     <strong>Time:</strong> ${this.formatDate(data.submittedAt, 'Just now')}
                 </div>
                 <button class="notification-action" onclick="window.location.reload()">
-                    Submit Another Form
+                    Submit Another Assessment
                 </button>
             </div>
         `;

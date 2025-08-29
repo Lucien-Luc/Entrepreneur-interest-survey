@@ -1,14 +1,14 @@
-# BPN Employer Diagnostic Form - Production Version
+# Expert Support Matching Platform - Production Version
 
 ## Overview
-This is a production-ready employer diagnostic survey application designed specifically for talent fairs and employer data collection.
+This is a production-ready Expert Support Matching survey application designed to connect entrepreneurs with expert support for business growth.
 
 ## Key Features
-- Multi-step employer diagnostic form (7 sections)
-- Professional design with partner branding (BPN, Harambee, Mastercard G2S)
+- Multi-step entrepreneur assessment form (4 sections)
+- Professional design with BPN branding and glassmorphism effects
 - Firebase integration for data submission
 - LocalStorage backup for offline functionality
-- Mobile-responsive design
+- Mobile-responsive design with bilingual support (English/Kinyarwanda)
 - Form validation and error handling
 
 ## Production Files
@@ -34,11 +34,11 @@ This is a production-ready employer diagnostic survey application designed speci
 3. Deploy to web server or Firebase hosting
 
 ## Form Data Structure
-Submissions are saved to Firestore collection `employer-diagnostics` with:
-- Company information
-- Position details
-- Work arrangement preferences
-- Benefits and compensation data
+Submissions are saved to Firestore collection `entrepreneur-assessments` with:
+- Personal and business information
+- Current business challenges
+- Expert support needs and desired outcomes
+- Commitment and follow-up preferences
 - Submission metadata (timestamp, device info)
 
 ## Support
