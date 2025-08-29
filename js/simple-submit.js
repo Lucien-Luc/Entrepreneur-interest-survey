@@ -1238,14 +1238,22 @@ class SimpleFormSubmit {
                 
                 <!-- Insightful Metrics Section -->
                 <div class="insights-section">
-                    <div class="section-title">
-                        <i class="fas fa-chart-pie"></i>
-                        <span>Detailed Insights</span>
-                    </div>
-                    <div id="insightfulMetrics">
-                        <div class="loading-placeholder">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            <span>Loading insights...</span>
+                    <div class="dropdown-section">
+                        <div class="dropdown-header" onclick="window.simpleFormSubmit.toggleInsightsDropdown()">
+                            <div class="dropdown-title">
+                                <i class="fas fa-chart-pie"></i>
+                                <span>Detailed Insights</span>
+                                <div class="disabled-badge">Disabled</div>
+                            </div>
+                            <div class="dropdown-arrow">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="dropdown-content" id="insightfulMetrics" style="display: none;">
+                            <div class="loading-placeholder">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>Loading insights...</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2033,6 +2041,118 @@ class SimpleFormSubmit {
                     min-height: 300px;
                 }
             }
+
+            /* Cool Dropdown Styles for Insights */
+            .dropdown-section {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-radius: 16px;
+                overflow: hidden;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+            }
+
+            .dropdown-section:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            }
+
+            .dropdown-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 1.5rem 2rem;
+                cursor: pointer;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                transition: all 0.2s ease;
+            }
+
+            .dropdown-header:hover {
+                background: rgba(255, 255, 255, 0.15);
+            }
+
+            .dropdown-title {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                color: white;
+                font-weight: 600;
+                font-size: 1.1rem;
+            }
+
+            .dropdown-title i {
+                font-size: 1.3rem;
+                opacity: 0.9;
+            }
+
+            .disabled-badge {
+                background: rgba(255, 255, 255, 0.2);
+                color: white;
+                padding: 0.3rem 0.8rem;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                font-weight: 500;
+                margin-left: 1rem;
+                backdrop-filter: blur(5px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+
+            .dropdown-arrow {
+                color: white;
+                font-size: 1.2rem;
+                transition: transform 0.3s ease;
+            }
+
+            .dropdown-content {
+                background: white;
+                padding: 2rem;
+                max-height: 500px;
+                overflow-y: auto;
+                transition: all 0.3s ease;
+            }
+
+            /* Enhanced disabled metrics styling */
+            .disabled-metrics {
+                opacity: 0.6;
+                pointer-events: none;
+            }
+
+            .metric-card.disabled {
+                background: #f8f9fa;
+                border: 1px dashed #dee2e6;
+                opacity: 0.7;
+            }
+
+            .metric-card.disabled .metric-header {
+                color: #6c757d;
+            }
+
+            .metric-card.disabled .metric-value {
+                color: #adb5bd;
+                font-style: italic;
+            }
+
+            .metric-card.disabled .metric-label {
+                color: #6c757d;
+            }
+
+            /* Animation for smooth transitions */
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    max-height: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    max-height: 500px;
+                    transform: translateY(0);
+                }
+            }
+
+            .dropdown-content[style*="display: block"] {
+                animation: slideDown 0.3s ease forwards;
+            }
         `;
         
         document.head.appendChild(style);
@@ -2517,6 +2637,7 @@ class SimpleFormSubmit {
     }
     
     generateInsightfulMetrics(responses) {
+        // Data collection still happens but display is disabled
         const industryStats = this.getIndustryBreakdown(responses);
         const experienceStats = this.getExperienceLevelBreakdown(responses);
         const workModeStats = this.getWorkModeBreakdown(responses);
@@ -2524,68 +2645,60 @@ class SimpleFormSubmit {
         const responseTimeStats = this.getResponseTimeAnalysis(responses);
         
         return `
-            <div class="metrics-grid">
-                <div class="metric-card">
+            <div class="metrics-grid disabled-metrics">
+                <div class="metric-card disabled">
                     <div class="metric-header">
                         <i class="fas fa-industry"></i>
                         <span>Top Industries</span>
                     </div>
                     <div class="metric-content">
-                        ${industryStats.slice(0, 3).map(stat => `
-                            <div class="metric-item">
-                                <span class="metric-label">${stat.name}</span>
-                                <span class="metric-value">${stat.count}</span>
-                            </div>
-                        `).join('')}
+                        <div class="metric-item">
+                            <span class="metric-label">Not specified</span>
+                            <span class="metric-value">2</span>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="metric-card">
+                <div class="metric-card disabled">
                     <div class="metric-header">
                         <i class="fas fa-user-graduate"></i>
                         <span>Experience Levels</span>
                     </div>
                     <div class="metric-content">
-                        ${experienceStats.slice(0, 3).map(stat => `
-                            <div class="metric-item">
-                                <span class="metric-label">${stat.name}</span>
-                                <span class="metric-value">${stat.count}</span>
-                            </div>
-                        `).join('')}
+                        <div class="metric-item">
+                            <span class="metric-label">Not specified</span>
+                            <span class="metric-value">2</span>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="metric-card">
+                <div class="metric-card disabled">
                     <div class="metric-header">
                         <i class="fas fa-home"></i>
                         <span>Work Modes</span>
                     </div>
                     <div class="metric-content">
-                        ${workModeStats.slice(0, 3).map(stat => `
-                            <div class="metric-item">
-                                <span class="metric-label">${stat.name}</span>
-                                <span class="metric-value">${stat.count}</span>
-                            </div>
-                        `).join('')}
+                        <div class="metric-item">
+                            <span class="metric-label">Not specified</span>
+                            <span class="metric-value">2</span>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="metric-card">
+                <div class="metric-card disabled">
                     <div class="metric-header">
                         <i class="fas fa-money-bill-wave"></i>
                         <span>Salary Ranges</span>
                     </div>
                     <div class="metric-content">
-                        ${salaryStats.slice(0, 3).map(stat => `
-                            <div class="metric-item">
-                                <span class="metric-label">${stat.name}</span>
-                                <span class="metric-value">${stat.count}</span>
-                            </div>
-                        `).join('')}
+                        <div class="metric-item">
+                            <span class="metric-label">Not specified</span>
+                            <span class="metric-value">2</span>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="metric-card">
+                <div class="metric-card disabled">
                     <div class="metric-header">
                         <i class="fas fa-clock"></i>
                         <span>Response Trends</span>
@@ -2593,31 +2706,29 @@ class SimpleFormSubmit {
                     <div class="metric-content">
                         <div class="metric-item">
                             <span class="metric-label">Peak Hour</span>
-                            <span class="metric-value">${responseTimeStats.peakHour}:00</span>
+                            <span class="metric-value">NaN:00</span>
                         </div>
                         <div class="metric-item">
                             <span class="metric-label">This Week</span>
-                            <span class="metric-value">${responseTimeStats.thisWeek}</span>
+                            <span class="metric-value">0</span>
                         </div>
                         <div class="metric-item">
                             <span class="metric-label">Growth</span>
-                            <span class="metric-value">${responseTimeStats.growth}%</span>
+                            <span class="metric-value">0%</span>
                         </div>
                     </div>
                 </div>
                 
-                <div class="metric-card">
+                <div class="metric-card disabled">
                     <div class="metric-header">
                         <i class="fas fa-briefcase"></i>
                         <span>Job Types</span>
                     </div>
                     <div class="metric-content">
-                        ${this.getJobTypeBreakdown(responses).slice(0, 3).map(stat => `
-                            <div class="metric-item">
-                                <span class="metric-label">${stat.name}</span>
-                                <span class="metric-value">${stat.count}</span>
-                            </div>
-                        `).join('')}
+                        <div class="metric-item">
+                            <span class="metric-label">Not specified</span>
+                            <span class="metric-value">2</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3064,6 +3175,110 @@ class SimpleFormSubmit {
         return positionData[fieldName] || response[fieldName] || defaultValue;
     }
 
+    // Generate comprehensive entrepreneur assessment details HTML
+    generateEntrepreneurDetailsHtml(response) {
+        return `
+            <h3><i class="fas fa-chart-line"></i> Current Business Challenges</h3>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <label>Business Growth Limited:</label>
+                    <span>${this.formatBusinessGrowthLimited(response.businessGrowthLimited)}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Decision Making Approach:</label>
+                    <span>${this.formatDecisionMaking(response.decisionMaking)}</span>
+                </div>
+                <div class="detail-item full-width">
+                    <label>Top Business Challenges:</label>
+                    <span>${this.formatTopChallenges(response.topChallenges, response.topChallengesOther)}</span>
+                </div>
+                <div class="detail-item full-width">
+                    <label>Challenge Details:</label>
+                    <span>${response.challengeDetails || 'Not provided'}</span>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem;"><i class="fas fa-hands-helping"></i> Expert Support Needs</h3>
+            <div class="detail-grid">
+                <div class="detail-item full-width">
+                    <label>Expert Support Areas:</label>
+                    <span>${response.expertSupportAreas || 'Not provided'}</span>
+                </div>
+                <div class="detail-item full-width">
+                    <label>Desired Outcomes (6-12 months):</label>
+                    <span>${response.desiredOutcomes || 'Not provided'}</span>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem;"><i class="fas fa-handshake"></i> Commitment & Follow-up</h3>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <label>Ready to Participate:</label>
+                    <span>${this.formatReadinessLevel(response.readyToParticipate)}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Assessment Completion:</label>
+                    <span>${response.completionTime ? Math.round(response.completionTime / 60000) + ' minutes' : 'Not tracked'}</span>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Helper methods to format survey responses
+    formatBusinessGrowthLimited(value) {
+        const options = {
+            'yes-often': 'Yes, often',
+            'sometimes': 'Sometimes', 
+            'no-fully-equipped': 'No, I feel fully equipped'
+        };
+        return options[value] || value || 'Not specified';
+    }
+    
+    formatDecisionMaking(value) {
+        const options = {
+            'trial-error': 'I rely on trial and error',
+            'ask-friends-peers': 'I ask friends/peers',
+            'search-online-trainings': 'I search online or attend trainings',
+            'consult-experts-mentors': 'I consult experts/mentors'
+        };
+        return options[value] || value || 'Not specified';
+    }
+    
+    formatTopChallenges(challenges, other) {
+        if (!challenges) return 'Not specified';
+        
+        const challengeLabels = {
+            'increasing-sales': 'Increasing sales',
+            'improving-production': 'Improving production processes',
+            'modernizing-business': 'Modernizing my business',
+            'becoming-sustainable': 'Becoming more sustainable',
+            'optimizing-team': 'Optimizing team structure/performance',
+            'improving-quality': 'Improving product or service quality'
+        };
+        
+        let formattedChallenges = [];
+        if (Array.isArray(challenges)) {
+            formattedChallenges = challenges.map(c => challengeLabels[c] || c);
+        } else if (typeof challenges === 'string') {
+            formattedChallenges = [challengeLabels[challenges] || challenges];
+        }
+        
+        if (other && other.trim()) {
+            formattedChallenges.push(`Other: ${other}`);
+        }
+        
+        return formattedChallenges.length > 0 ? formattedChallenges.join(', ') : 'Not specified';
+    }
+    
+    formatReadinessLevel(value) {
+        const options = {
+            'yes-ready-committed': 'Yes, I am ready and committed',
+            'maybe-understand-more': 'Maybe, I would like to understand more',
+            'no-not-at-moment': 'No, not at the moment'
+        };
+        return options[value] || value || 'Not specified';
+    }
+
     // Generate comprehensive position details HTML for multi-position display
     generatePositionDetailsHtml(response) {
         const positions = this.getAllPositions(response);
@@ -3354,45 +3569,36 @@ class SimpleFormSubmit {
         popup.innerHTML = `
             <div class="notification-popup response-detail-popup">
                 <div class="notification-header">
-                    <h2>Response Details - ${response.companyName || 'Unknown Company'}</h2>
+                    <h2>Entrepreneur Assessment - ${response.entrepreneurName || response.companyName || 'Unknown Entrepreneur'}</h2>
                     <button onclick="this.closest('.notification-overlay').remove()" class="close-btn">×</button>
                 </div>
                 <div class="response-detail-content">
-                    <!-- Company Information Section -->
-                    <div class="company-info-section">
-                        <h3><i class="fas fa-building"></i> Company Information</h3>
+                    <!-- Personal & Business Information Section -->
+                    <div class="entrepreneur-info-section">
+                        <h3><i class="fas fa-user-circle"></i> Personal & Business Information</h3>
                         <div class="detail-grid">
+                            <div class="detail-item">
+                                <label>Entrepreneur Name:</label>
+                                <span>${response.entrepreneurName || 'Not provided'}</span>
+                            </div>
                             <div class="detail-item">
                                 <label>Company Name:</label>
                                 <span>${response.companyName || 'Not provided'}</span>
                             </div>
                             <div class="detail-item">
-                                <label>Contact Person:</label>
-                                <span>${response.contactPerson || 'Not provided'}</span>
+                                <label>Assessment Date:</label>
+                                <span>${Utils.formatDate(response.createdAt || response.timestamp, 'datetime')}</span>
                             </div>
                             <div class="detail-item">
-                                <label>Industry:</label>
-                                <span>${response.industry || 'Not specified'}</span>
-                            </div>
-                            <div class="detail-item">
-                                <label>Location:</label>
-                                <span>${response.companyLocation || 'Not specified'}</span>
-                            </div>
-                            <div class="detail-item">
-                                <label>Website:</label>
-                                <span>${response.companyWebsite || 'Not provided'}</span>
-                            </div>
-                            <div class="detail-item full-width">
-                                <label>Company Description:</label>
-                                <span>${response.companyDescription || 'Not provided'}</span>
+                                <label>Device Used:</label>
+                                <span>${response.deviceInfo?.device || 'Not specified'}</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Position Information Section -->
-                    <div class="positions-info-section">
-                        ${this.generatePositionDetailsHtml(response)}
-
+                    <!-- Business Challenges Section -->
+                    <div class="challenges-info-section">
+                        ${this.generateEntrepreneurDetailsHtml(response)}
                     </div>
                 </div>
             </div>
@@ -4648,6 +4854,28 @@ class SimpleFormSubmit {
     showGuideAgain() {
         localStorage.removeItem('bpn_guide_seen');
         this.showUserGuide();
+    }
+
+    // Toggle insights dropdown
+    toggleInsightsDropdown() {
+        const dropdown = document.getElementById('insightfulMetrics');
+        const arrow = document.querySelector('.dropdown-arrow i');
+        
+        if (!dropdown || !arrow) return;
+        
+        const isVisible = dropdown.style.display !== 'none';
+        
+        if (isVisible) {
+            dropdown.style.display = 'none';
+            arrow.style.transform = 'rotate(0deg)';
+        } else {
+            dropdown.style.display = 'block';
+            arrow.style.transform = 'rotate(180deg)';
+        }
+        
+        // Add smooth animation
+        dropdown.style.transition = 'all 0.3s ease';
+        arrow.style.transition = 'transform 0.3s ease';
     }
 }
 
