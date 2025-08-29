@@ -2050,14 +2050,23 @@ class SimpleFormSubmit {
             // Try Firebase first
             if (window.firebaseConfig && window.firebaseConfig.getCollection) {
                 console.log('Attempting Firebase connection...');
-                const result = await window.firebaseConfig.getCollection('entrepreneur-surveys');
-                console.log('Firebase result:', result);
+                console.log('Trying entrepreneur-surveys collection first...');
+                let result = await window.firebaseConfig.getCollection('entrepreneur-surveys');
+                console.log('entrepreneur-surveys result:', result);
+                
+                // If no data found, try alternative collection name
+                if (!result || !result.success || !result.data || result.data.length === 0) {
+                    console.log('No data in entrepreneur-surveys, trying entrepreneur-assessments...');
+                    result = await window.firebaseConfig.getCollection('entrepreneur-assessments');
+                    console.log('entrepreneur-assessments result:', result);
+                }
                 
                 if (result && result.success && result.data && result.data.length > 0) {
                     responses = result.data;
-                    console.log('Firebase data loaded:', responses.length, 'responses');
+                    console.log('Firebase data loaded:', responses.length, 'responses from Firebase');
+                    console.log('Sample response structure:', responses[0] ? Object.keys(responses[0]) : 'No responses');
                 } else {
-                    console.log('No Firebase data found, trying localStorage...');
+                    console.log('No Firebase data found in either collection, trying localStorage...');
                 }
             } else {
                 console.log('Firebase not available, using localStorage...');
@@ -2065,7 +2074,19 @@ class SimpleFormSubmit {
             
             // Always try localStorage as fallback
             if (responses.length === 0) {
-                const localData = JSON.parse(localStorage.getItem('entrepreneur-submissions') || '[]');
+                console.log('Checking localStorage for data...');
+                let localData = JSON.parse(localStorage.getItem('entrepreneur-submissions') || '[]');
+                console.log('entrepreneur-submissions found:', localData.length, 'items');
+                
+                // Also check alternative localStorage keys
+                if (localData.length === 0) {
+                    console.log('Checking alternative localStorage keys...');
+                    const altData1 = JSON.parse(localStorage.getItem('bpn_pending_submissions') || '[]');
+                    const altData2 = JSON.parse(localStorage.getItem('survey-responses') || '[]');
+                    console.log('bpn_pending_submissions:', altData1.length, 'items');
+                    console.log('survey-responses:', altData2.length, 'items');
+                    localData = [...altData1, ...altData2];
+                }
                 responses = localData;
                 console.log('Using localStorage data:', responses.length, 'responses');
             }
